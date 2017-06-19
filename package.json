@@ -1,0 +1,27 @@
+{
+  "name": "Hybond",
+  "version": "0.0.1",
+  "description": "A Magical Bond for Hybrid Developer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No test command defined\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Hybond/Hybond.git"
+  },
+  "keywords": [
+    "frone-end",
+    "react",
+    "express"
+  ],
+  "author": "CodeMoe",
+  "license": "MIT License",
+  "bugs": {
+    "url": "https://github.com/Hybond/Hybond/issues"
+  },
+  "homepage": "https://github.com/Hybond/Hybond",
+  "devDependencies": {
+    "react": "^15.6.1"
+  }
+}
