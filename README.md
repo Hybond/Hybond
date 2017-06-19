@@ -1,2 +1,3 @@
 # Hybond
-A interactive project about how the modern front-end coder works.
+
+Help you to choose your way in front-end developing. (Hybond stands for Hydrogen bond)
