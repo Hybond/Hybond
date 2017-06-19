@@ -22,6 +22,10 @@
   },
   "homepage": "https://github.com/Hybond/Hybond",
   "devDependencies": {
-    "react": "^15.6.1"
+    "webpack": "^2.6.1"
+  },
+  "dependencies": {
+    "react": "^15.6.1",
+    "express": "^4.15.3"
   }
 }
