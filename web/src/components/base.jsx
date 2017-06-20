@@ -64,7 +64,7 @@ class MainPart extends React.Component {
 
 function Footer() {
   return (
-    <footer>
+    <footer className='container g'>
       Designed and built with all the love in China by @Dimpurr, @Dring and @rozc.<br />
       本项目源码受 <a href='https://github.com/Hybond/Hybond/blob/master/LICENSE'>MIT</a> 开源协议保护，文档受 <a href='https://creativecommons.org/licenses/by/3.0/'>CC BY 3.0</a> 开源协议保护。
     </footer>
