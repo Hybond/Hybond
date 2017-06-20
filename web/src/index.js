@@ -1,8 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './sass/main.scss';
+
+import './styles/normalize.css';
+import './styles/h5bp.css';
+import './styles/main.scss';
+
+import Base from './components/base.jsx'
 
 ReactDOM.render(
-  <h1>Hello, world!</h1>,
+  <Base></Base>,
   document.getElementById('root')
 );

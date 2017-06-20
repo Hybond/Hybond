@@ -34,14 +34,9 @@
     "html-loader": "^0.4.5",
     "node-sass": "^4.5.3",
     "sass-loader": "^6.0.6",
-<<<<<<< HEAD
     "style-loader": "^0.18.2",
+    "svg-url-loader": "^2.0.2",
     "webpack": "^2.6.1"
-=======
-    "webpack": "^2.6.1",
-    "style-loader": "^0.18.2",
-    "node-sass": "^4.5.3"
->>>>>>> master
   },
   "dependencies": {
     "autoprefixer": "^7.1.1",

@@ -1,0 +1,86 @@
+// colors
+$primaryColor: #2979ff; // Primary Color
+$primaryColorLight: #75a7ff; // Light
+$primaryColorDark: #004ecb; // Dark
+$secondaryColor: #ffee58; // Secondary Color
+$secondaryColorLight: #ffff8b; // Light
+$secondaryColorDark: #c9bc1f; // Dark
+$grayColor: #f5f5f6; // Gray
+
+html, body {
+  min-height: 100%;
+  background: $grayColor;
+}
+* {
+  box-sizing: border-box;
+}
+
+// Basic Setup
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 15px;
+  &.c-wp { // without padding
+    padding: 0;
+  }
+  @media screen and (min-width: 992px) {
+    width: 975px;
+  }
+}
+
+.float-left {
+  float: left;
+}
+.float-right {
+  float: right;
+}
+
+#root {
+  header.g {
+    background: $primaryColor;
+    color: #fff;
+    height: 300px;
+    .logo {
+      width: 105px;
+      height: 30px;
+      background: url(../img/Hybond.svg) rgba(0, 0, 0, 0) no-repeat;
+      background-size: 105px 30px;
+      display: inline-block;
+    }
+    .top-row {
+      padding-top: 20px;
+      padding-bottom: 10px;
+      .top-add {
+        color: #fff;
+        line-height: 27px;
+        font-size: 120%;
+        text-decoration: none;
+        margin-right: 1em;
+        background: rgba(0, 0, 0, .1);
+        display: inline-block;
+        width: 27px;
+        height: 27px;
+        text-align: center;
+        opacity: .7;
+        transition: all .3s;
+        &:hover {
+          opacity: 1;
+        }
+      }
+      .user-info {
+        display: inline-block;
+        line-height: 30px;
+      }
+    }
+  }
+  main {
+    margin-top: -150px;
+    background: #fff;
+    padding: 30px 0;
+    min-height: 400px;
+    .container {
+      padding: 0 45px;
+    }
+  }
+}
