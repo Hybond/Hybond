@@ -16,8 +16,10 @@ module.exports = {
             //     loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader")
             // },
             {
-                test: /\.scss/,
-                loaders: ['css-loader', 'autoprefixer', 'sass-loader'],
+                /*test: /\.scss/,
+                loaders: ['sass-loader', 'css-loader', 'autoprefixer'],*/
+                test: /\.scss$/,
+                loaders: ['style-loader', 'css-loader', 'sass-loader']
             }
         ]
     }
