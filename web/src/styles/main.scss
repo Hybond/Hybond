@@ -1,7 +1,7 @@
 // colors
-$primaryColor: #2979ff; // Primary Color
-$primaryColorLight: #75a7ff; // Light
-$primaryColorDark: #004ecb; // Dark
+$primaryColor: #1565c0; // Primary Color
+$primaryColorLight: #5e92f3; // Light
+$primaryColorDark: #003c8f; // Dark
 $secondaryColor: #ffee58; // Secondary Color
 $secondaryColorLight: #ffff8b; // Light
 $secondaryColorDark: #c9bc1f; // Dark
@@ -53,14 +53,14 @@ html, body {
       padding-bottom: 10px;
       .top-add {
         color: #fff;
-        line-height: 27px;
+        line-height: 30px;
         font-size: 120%;
         text-decoration: none;
         margin-right: 1em;
         background: rgba(0, 0, 0, .1);
         display: inline-block;
-        width: 27px;
-        height: 27px;
+        width: 30px;
+        height: 30px;
         text-align: center;
         opacity: .7;
         transition: all .3s;
@@ -82,6 +82,11 @@ html, body {
     .container {
       padding: 0 45px;
     }
+    h1.big {
+      font-size: 250%;
+      text-align: center;
+      font-weight: lighter;
+    }
   }
   footer.g {
     padding: 30px 15px;
@@ -92,5 +97,23 @@ html, body {
       text-decoration: none;
       color: #333;
     }
+  }
+}
+
+// Flow chart
+
+$chartColor: #232c38;
+
+.flow-chart {
+  height: 250px;
+  width: 100%;
+  background: $chartColor;
+  color: #fff;
+  overflow: auto;
+  section {
+    width: auto;
+    padding: 0 30px;
+    height: 100%;
+    display: inline-block;
   }
 }
