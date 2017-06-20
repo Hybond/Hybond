@@ -75,7 +75,7 @@ function Footer () {
   return (
     <footer className='container g'>
       <p><a href='https://github.com/Hybond/Hybond' target='_blank'>Github</a> · <a href={site_url + '/about'}>关于</a></p>
-      Designed and built with all the love in China by @Dimpurr, @Dring and @rozc.<br />
+      Designed and built with all the love in China by @Dimpurr, @Dring and @Rozc.<br />
       本项目源码受 <a href='https://github.com/Hybond/Hybond/blob/master/LICENSE' target='_blank'>MIT</a> 开源协议保护，文档受 <a href='https://creativecommons.org/licenses/by/3.0/' target='_blank'>CC BY 3.0</a> 开源协议保护。
     </footer>
   );
