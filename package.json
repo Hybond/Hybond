@@ -24,7 +24,6 @@
   },
   "homepage": "https://github.com/Hybond/Hybond",
   "devDependencies": {
-    "babel": "^6.23.0",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.25.0",
     "babel-loader": "^7.0.0",
@@ -33,12 +32,13 @@
     "babel-preset-react": "^6.24.1",
     "css-loader": "^0.28.4",
     "sass-loader": "^6.0.6",
-    "webpack": "^2.6.1"
+    "webpack": "^2.6.1",
+    "style-loader": "^0.18.2",
+    "node-sass": "^4.5.3"
   },
   "dependencies": {
     "express": "^4.15.3",
     "markdown": "^0.5.0",
-    "node-sass": "^4.5.3",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "sequelize": "^4.1.0",
