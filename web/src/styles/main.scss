@@ -110,10 +110,61 @@ $chartColor: #232c38;
   background: $chartColor;
   color: #fff;
   overflow: auto;
+  &::after {
+    content: '';
+    width: 100%;
+    height: 4px;
+    position: absolute;
+    left: 0;
+    top: 40px;
+    background: url(../img/dots.svg) $primaryColor;
+    background-size: 9px 4px;
+  }
   section {
     width: auto;
-    padding: 0 30px;
+    padding: 0 70px;
+    padding-top: 80px;
     height: 100%;
     display: inline-block;
+    column-width:160px;
+    column-gap: 10px;
+    button {
+      text-align: left;
+      width: 160px;
+      background: rgba(0, 0, 0, .15);
+      margin-bottom: 10px;
+      border: none;
+      padding: 10px 0;
+      padding-left: 40px;
+      outline: none;
+      position: relative;
+      border: 1px solid rgba($primaryColorLight, .3);
+      transition: border .3s;
+      &:hover {
+        border-color: rgba($primaryColorLight, .6);
+      }
+      .flow-chart-color {
+        position: absolute;
+        left: 15px;
+        top: 21px;
+        margin-top: -5.5px;
+        display: inline-block;
+        width: 11px;
+        height: 11px;
+        margin-right: 8px;
+        border-radius: 100%;
+      }
+    }
+    .flow-chart-title {
+      position: absolute;
+      top: 40px;
+      left: 70px;
+      margin-top: -15px;
+      height: 35px;
+      line-height: 30px;
+      padding: 0 .7em;
+      background: $chartColor;
+      border: 2px solid $primaryColor;
+    }
   }
 }

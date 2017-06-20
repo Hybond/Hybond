@@ -99,10 +99,10 @@ class FlowChart extends React.Component {
     return (
       <div className='flow-chart swiper-container'>
         <div className='flow-chart-container swiper-wrapper'>
-          <FlowSection name='后端语言' values={['Python', 'Node.js', 'PHP']} colors={['#8e24aa', '#8e24aa', '#8e24aa']} />
-          <FlowSection name='前端库' values={['Vue.js', 'React', 'Foo']} colors={['#8e24aa', '#8e24aa', '#8e24aa']} />
-          <FlowSection name='自动化' values={['Webpack', 'Goo']} colors={['#8e24aa', '#8e24aa', '#8e24aa']} />
-          <FlowSection name='IDE 和生产' values={['Atom', 'Sublime Text', 'Windows 记事本', 'Vim', 'Emacs']} colors={['#8e24aa', '#8e24aa', '#8e24aa']} />
+          <FlowSection name='后端语言' values={['Python', 'Node.js', 'PHP']} colors={['#8e24aa', '#d81b60', '#00897b']} />
+          <FlowSection name='前端库' values={['Vue.js', 'React', 'Foo']} colors={['#ffeb3b', '#8e24aa', '#8e24aa']} />
+          <FlowSection name='自动化' values={['Webpack', 'Goo']} colors={['#e53935', '#d81b60', '#8e24aa']} />
+          <FlowSection name='IDE 和生产' values={['Atom', 'Sublime Text', 'Windows 记事本', 'Vim', 'Emacs']} colors={['#8e24aa', '#8e24aa', '#8e24aa', '#ffeb3b', '#ffeb3b']} />
         </div>
         <div className="swiper-pagination"></div>
       </div>
