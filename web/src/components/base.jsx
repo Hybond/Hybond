@@ -124,7 +124,7 @@ function FlowSection (props) {
   }
   return (
     <section className='swiper-slide'>
-      <span className='flow-chart-title'>{props.name}</span>
+      <span className='flow-chart-title'><div className='flow-chart-dot'></div>{props.name}</span>
       {buildTags()}
     </section>
   );

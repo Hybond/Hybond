@@ -105,7 +105,7 @@ html, body {
 $chartColor: #232c38;
 
 .flow-chart {
-  height: 250px;
+  height: 270px;
   width: 100%;
   background: $chartColor;
   color: #fff;
@@ -123,7 +123,7 @@ $chartColor: #232c38;
   section {
     width: auto;
     padding: 0 70px;
-    padding-top: 80px;
+    padding-top: 120px;
     height: 100%;
     display: inline-block;
     column-width:160px;
@@ -156,15 +156,23 @@ $chartColor: #232c38;
       }
     }
     .flow-chart-title {
+      .flow-chart-dot {
+        display: block;
+        position: absolute;
+        left: 50%;
+        top: -30px;
+        margin-left: -10px;
+        width: 20px;
+        height: 20px;
+        border-radius: 100%;
+        background: $primaryColor;
+      }
       position: absolute;
-      top: 40px;
+      top: 61px;
       left: 70px;
-      margin-top: -15px;
       height: 35px;
       line-height: 30px;
       padding: 0 .7em;
-      background: $chartColor;
-      border: 2px solid $primaryColor;
     }
   }
 }
