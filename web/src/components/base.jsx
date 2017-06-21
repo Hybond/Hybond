@@ -1,7 +1,10 @@
 import React from 'react';
+import Introduction from './introduction.jsx'
+
+import config from '../config.js'
 
 // The site's url
-const site_url = 'http://hybond.code.moe'
+const site_url = config.site_url;
 
 class Base extends React.Component {
   render () {
@@ -43,7 +46,7 @@ class HeaderUser extends React.Component {
       <div className='float-right'>
         <a className='top-add' href='javascript: alert("todo!")'>+</a>
         <div className='user-info' onClick={() => this.setState({logState: !this.state.logState})}>{
-          this.state.logState ? '已登录' : '未登录（点击测试切换状态）'
+          this.state.logState ? '已登录' : '未登录'
         }</div>
       </div>
     );
@@ -55,17 +58,30 @@ class MainPart extends React.Component {
     super();
     this.state = {
       title: '技术选型向导', // TODO: change this.
-      isFlowChart: true
+      isFlowChart: true,
+      pageType: 'Introduction', // The type of the page.
     };
   }
 
   render () {
+    let mainContent;
+    switch (this.state.pageType) {
+      case 'Introduction':
+        mainContent = (
+          <Introduction />
+        );
+        break;
+      default:
+        mainContent = (<h1 className='container'>Error, wrong pageType.</h1>);
+    }
+
     return (
       <main className='container c-wp'>
         <div className="container">
           <h1 className='big'>{this.state.title}</h1>
         </div>
         {this.state.isFlowChart ? <FlowChart /> : null}
+        {mainContent}
       </main>
     );
   }
@@ -82,6 +98,8 @@ function Footer () {
 }
 
 // ------ Flow chart ------ //
+
+// TODO: Use Array or Object to control FlowSection's generating.
 
 class FlowChart extends React.Component {
   componentDidMount () {
@@ -122,8 +140,11 @@ function FlowSection (props) {
   function Tags (props) {
     return (<button className='flow-chart-tag'><div className='flow-chart-color' style={{backgroundColor: props.color}}></div>{props.value}</button>);
   }
+  // work out width
+  let n = Math.round(values.length / 2);
+  let sWidth = 70 * 2 + 160 * n + 20 * (n - 1);
   return (
-    <section className='swiper-slide'>
+    <section className='swiper-slide' style={{width: sWidth}}>
       <span className='flow-chart-title'><div className='flow-chart-dot'></div>{props.name}</span>
       {buildTags()}
     </section>
