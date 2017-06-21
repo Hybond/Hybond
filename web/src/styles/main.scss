@@ -230,7 +230,10 @@ $chartColor: #232c38;
     border-radius: 100%;
   }
   .details {
-    width: 40%;
+    width: 100%;
+    @media screen and (min-width: 992px) {
+      width: 40%;
+    }
     float: left;
     h2 {
       padding-top: .2em;
