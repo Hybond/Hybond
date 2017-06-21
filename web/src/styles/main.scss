@@ -267,6 +267,44 @@ $chartColor: #232c38;
             }
           }
         }
+        .details-tooltip-pin {
+          position: relative;
+        }
+        &:hover {
+          .details-tooltip {
+            visibility: visible;
+            opacity: 1;
+          }
+        }
+        .details-tooltip {
+          width: 320px;
+          height: 40px;
+          visibility: hidden;
+          opacity: 0;
+          transition: opacity .3s .3s;
+          position: absolute;
+          left: 50%;
+          margin-left: -160px;
+          top: 30px;
+          background: #fff;
+          border: 2px solid #000;
+          input {
+            width: 238px;
+            height: 36px;
+            padding: 0 .5em;
+            outline: none;
+            border: none;
+            display: inline-block;
+          }
+          button {
+            width: 78px;
+            height: 36px;
+            background: $primaryColor;
+            color: #fff;
+            border: none;
+            display: inline-block;
+          }
+        }
       }
     }
   }

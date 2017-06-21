@@ -1,4 +1,5 @@
 import React from 'react';
+import ClipboardButton from 'react-clipboard.js';
 
 class Introduction extends React.Component {
   render () {
@@ -32,28 +33,23 @@ function IntroHeader (props) {
 
 function IntroDetials(props) {
   // Handle the list
-  function getHost(url) {
-    // get host from a url, e.g. http://test.example.com/test#yes -> test.example.com
-    let regex = /^((\w+):\/\/)?((\w+):?(\w+)?@)?([^\/\?:]+):?(\d+)?(\/?[^\?#]+)?\??([^#]+)?#?(\w*)/;
-    return regex.exec(url)[6]
-  }
   let list = props.list, outputList = [];
   if (list.verson) {
     outputList.push(<li className='devide'><label>版本</label><span>{list.verson}</span></li>);
   }
   if (list.homepage) {
     outputList.push(
-      <li><label>项目主页</label><span><a target='_blank' href={list.homepage}>{getHost(list.homepage)}</a></span></li>
+      <LinkList listName='项目主页' link={list.homepage} copyNum={1} />
     );
   }
   if (list.sourceCode) {
     outputList.push(
-      <li><label>源码</label><span><a target='_blank' href={list.sourceCode}>{getHost(list.sourceCode)}</a></span></li>
+      <LinkList listName='源码' link={list.sourceCode} copyNum={2} />
     );
   }
   if (list.docs) {
     outputList.push(
-      <li><label>文档</label><span><a target='_blank' href={list.docs}>{getHost(list.docs)}</a></span></li>
+      <LinkList listName='文档' link={list.docs} copyNum={3} />
     );
   }
 
@@ -63,6 +59,63 @@ function IntroDetials(props) {
       <ul>{outputList}</ul>
     </div>
   );
+}
+
+// Links & it's hover panel
+class LinkList extends React.Component {
+  constructor (props) {
+    super(props);
+    this.handleMouseEnter = this.handleMouseEnter.bind(this);
+    this.onSuccess = this.onSuccess.bind(this);
+    this.onError = this.onError.bind(this);
+
+    this.state = {
+      copyResult: '',
+      copyClass: '',
+    }
+  }
+
+  onSuccess () {
+    this.setState({
+      copyResult: 'Yes!',
+      copyClass: 'details-tooltip-success',
+    });
+  }
+
+  onError () {
+    this.setState({
+      copyResult: 'No!',
+      copyClass: 'details-tooltip-error',
+    });
+  }
+
+  getHost (url) {
+    // get host from a url, e.g. http://test.example.com/test#yes -> test.example.com
+    let regex = /^((\w+):\/\/)?((\w+):?(\w+)?@)?([^\/\?:]+):?(\d+)?(\/?[^\?#]+)?\??([^#]+)?#?(\w*)/;
+    return regex.exec(url)[6];
+  }
+
+  handleMouseEnter () {
+    this.linkInput.select();
+  }
+
+  render () {
+    return (
+      <li>
+        <label>{this.props.listName}</label><span><a target='_blank' href={this.props.link} onMouseEnter={this.handleMouseEnter}>{this.getHost(this.props.link)}</a></span>
+        <div className='details-tooltip-pin'>
+          <div className='details-tooltip'>
+            <input type='text' className={'linkInput-'+this.props.copyNum} defaultValue={this.props.link} ref={input => this.linkInput = input} onChange={(e) => e.target.value = this.props.link} />
+            <ClipboardButton onSuccess={this.onSuccess} onError={this.onError} data-clipboard-text={this.props.link}>复制</ClipboardButton>
+            <LinkReturn className={this.state.copyClass} copyResult={this.state.copyResult} />
+          </div>
+        </div>
+      </li>
+    );
+  }
+}
+function LinkReturn (props) {
+  return (<div className='linkReturn'>{props.copyResult}</div>);
 }
 
 export default Introduction;
