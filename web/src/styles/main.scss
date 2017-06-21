@@ -277,32 +277,72 @@ $chartColor: #232c38;
           }
         }
         .details-tooltip {
-          width: 320px;
+          width: 330px;
           height: 40px;
           visibility: hidden;
           opacity: 0;
           transition: opacity .3s .3s;
           position: absolute;
-          left: 50%;
-          margin-left: -160px;
-          top: 30px;
+          left: 100%;
+          padding-left: 10px;
+          top: -4px;
           background: #fff;
-          border: 2px solid #000;
+          overflow: hidden;
           input {
-            width: 238px;
-            height: 36px;
-            padding: 0 .5em;
+            width: 320px;
+            height: 40px;
+            padding: 0 10px;
             outline: none;
-            border: none;
+            border: 1px solid #dfdfdf;
             display: inline-block;
+            background: #fff;
+            &::selection, &-moz-::selection {
+              background: rgba(#000, .05);
+            }
           }
           button {
-            width: 78px;
-            height: 36px;
-            background: $primaryColor;
-            color: #fff;
-            border: none;
+            position: absolute;
+            z-index: 5;
+            top: 0;
+            right: 0;
+            width: 95px;
+            padding-left: 15px;
+            height: 40px; // to fix the 1px bug
+            border: 1px solid #dfdfdf;
+            border-left: none;
+            background: #fff;
+            background: linear-gradient(left , rgba(#fff, .0) , #fff 16%);
+            background: -webkit-linear-gradient(left , rgba(#fff, .0) , #fff 16%);
+            background: -moz-linear-gradient(left , rgba(#fff, .0) , #fff 16%);
+            color: $primaryColor;
             display: inline-block;
+            outline: none;
+          }
+          .link-return {
+            position: absolute;
+            border: 1px solid #43a047;
+            right: 0;
+            top: 0;
+            width: 320px;
+            height: 40px;
+            z-index: 10;
+            background: rgba(#fff, .9);
+            visibility: hidden;
+            text-align: center;
+            line-height: 40px;
+            &.details-tooltip-success {
+              color: #43a047;
+              animation:inAndOutFade 2s .2s ease both;}
+            @keyframes inAndOutFade{
+              0% {opacity:0;
+              visibility: hidden;}
+              20% {opacity:1;
+              visibility: visible;}
+              80% {opacity:1;
+              visibility: visible;}
+              100% {opacity:0;
+              visibility: hidden;}
+            }
           }
         }
       }

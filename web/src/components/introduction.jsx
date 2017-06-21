@@ -71,21 +71,21 @@ class LinkList extends React.Component {
 
     this.state = {
       copyResult: '',
-      copyClass: '',
+      copyClass: 'link-return',
     }
   }
 
   onSuccess () {
     this.setState({
-      copyResult: 'Yes!',
-      copyClass: 'details-tooltip-success',
+      copyResult: '已经复制到剪切板',
+      copyClass: 'details-tooltip-success link-return',
     });
   }
 
   onError () {
     this.setState({
       copyResult: 'No!',
-      copyClass: 'details-tooltip-error',
+      copyClass: 'details-tooltip-error link-return',
     });
   }
 
@@ -107,7 +107,7 @@ class LinkList extends React.Component {
           <div className='details-tooltip'>
             <input type='text' className={'linkInput-'+this.props.copyNum} defaultValue={this.props.link} ref={input => this.linkInput = input} onChange={(e) => e.target.value = this.props.link} />
             <ClipboardButton onSuccess={this.onSuccess} onError={this.onError} data-clipboard-text={this.props.link}>复制</ClipboardButton>
-            <LinkReturn className={this.state.copyClass} copyResult={this.state.copyResult} />
+            <LinkReturn classes={this.state.copyClass} copyResult={this.state.copyResult} />
           </div>
         </div>
       </li>
@@ -115,7 +115,7 @@ class LinkList extends React.Component {
   }
 }
 function LinkReturn (props) {
-  return (<div className='linkReturn'>{props.copyResult}</div>);
+  return (<div className={props.classes}>{props.copyResult}</div>);
 }
 
 export default Introduction;
