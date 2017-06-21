@@ -57,7 +57,9 @@ class MainPart extends React.Component {
   constructor () {
     super();
     this.state = {
-      title: '技术选型向导', // TODO: change this.
+      title: 'Hybond', // TODO: change this.
+      description: 'A Magical Bond for Hybrid Developer',
+      titleLink: 'http://hybond.code.moe/',
       isFlowChart: true,
       pageType: 'Introduction', // The type of the page.
     };
@@ -79,6 +81,7 @@ class MainPart extends React.Component {
       <main className='container c-wp'>
         <div className="container">
           <h1 className='big'>{this.state.title}</h1>
+          <p className="proj-description">{this.state.description}<br /><a target='_blank' href={this.state.titleLink}>{this.state.titleLink}</a></p>
         </div>
         {this.state.isFlowChart ? <FlowChart /> : null}
         {mainContent}

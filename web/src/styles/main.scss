@@ -92,6 +92,21 @@ html, body {
     h1 {
       font-size: 2.6em;
     }
+    // Other elements
+    .proj-description {
+      text-align: center;
+      margin-top: -1.3em;
+      margin-bottom: 2.8em;
+      font-weight: bold;
+      a {
+        font-weight: normal;
+        text-decoration: none;
+        color: $primaryColor;
+        &:hover {
+          border-bottom: 2px solid $primaryColor;
+        }
+      }
+    }
   }
   footer.g {
     padding: 30px 15px;
