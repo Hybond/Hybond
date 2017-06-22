@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"No test command defined\"",
     "build": "webpack --config web/webpack.config.js -p -d",
-    "watch": "webpack --config web/webpack.config.js -p -d --watch"
+    "watch": "webpack --config web/webpack.config.js -p -d --watch",
+    "hot": "webpack-dev-server --config web/webpack.config.js -p -d --watch --hot"
   },
   "repository": {
     "type": "git",
@@ -45,7 +46,9 @@
     "react": "^15.6.1",
     "react-clipboard.js": "^1.1.2",
     "react-dom": "^15.6.1",
+    "react-highlight": "^0.10.0",
     "sequelize": "^4.1.0",
-    "sqlite3": "^3.1.8"
+    "sqlite3": "^3.1.8",
+    "webpack-dev-server": "^2.5.0"
   }
 }

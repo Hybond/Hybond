@@ -1,5 +1,7 @@
 import React from 'react';
 import ClipboardButton from 'react-clipboard.js';
+import Highlight from 'react-highlight';
+import '../styles/highlight-github-gist.css';
 
 class Introduction extends React.Component {
   render () {
@@ -15,13 +17,14 @@ class Introduction extends React.Component {
       <div className='container introduction'>
         <IntroHeader partName='前端库' color='#8e24aa' projName='React' projDes='A declarative, efficient, and flexible JavaScript library for building user interfaces.' />
         <IntroDetials list={detialList} />
+        <IntroInstall />
         <div className='clearfix'></div>
       </div>
     );
   }
 }
 
-function IntroHeader (props) {
+function IntroHeader(props) {
   return (
     <section>
       <span className='part-name'>{props.partName}</span>
@@ -84,7 +87,7 @@ class LinkList extends React.Component {
 
   onError () {
     this.setState({
-      copyResult: 'No!',
+      copyResult: '复制失败，请手动复制',
       copyClass: 'details-tooltip-error link-return',
     });
   }
@@ -114,8 +117,32 @@ class LinkList extends React.Component {
     );
   }
 }
-function LinkReturn (props) {
+function LinkReturn(props) {
   return (<div className={props.classes}>{props.copyResult}</div>);
+}
+
+class IntroInstall extends React.Component {
+  constructor () {
+    super();
+  }
+
+  render () {
+    // TODO: Delete these dev data
+    function DevData() {
+      let data = '<h3>使用包管理工具</h3> <p>使用 Yarn 安装：</p> <pre><code>yarn init\nyarn add react react-dom </code></pre> <p>使用 npm 安装：</p> <pre><code>npm init\nnpm install --save react react-dom </code></pre> <h3>使用 CDN</h3> <p>开发版本：</p> <pre><code>&lt;script src=&quot;https://unpkg.com/react@15/dist/react.js&quot;&gt;&lt;/script&gt;\n&lt;script src=&quot;https://unpkg.com/react-dom@15/dist/react-dom.js&quot;&gt;&lt;/script&gt; </code></pre> <p>生产版本：</p> <pre><code>&lt;script src=&quot;https://unpkg.com/react@15/dist/react.min.js&quot;&gt;&lt;/script&gt;\n&lt;script src=&quot;https://unpkg.com/react-dom@15/dist/react-dom.min.js&quot;&gt;&lt;/script&gt; </code></pre> <h3>其它方式</h3> <p>使用 Create React App：</p> <pre><code>npm install -g create-react-app\ncreate-react-app my-app\n\ncd my-app\nnpm start </code></pre> <p><a href="https://facebook.github.io/react/docs/installation.html#creating-a-new-application">了解更多</a></p> <p><a href="https://facebook.github.io/react/docs/installation.html#creating-a-new-application">更多安装方式</a></p>';
+      return (
+        <Highlight innerHTML={true}>
+          {data}
+        </Highlight>
+      );
+    }
+    return (
+      <div className='install'>
+        <h2>安装</h2>
+        <DevData />
+      </div>
+    );
+  }
 }
 
 export default Introduction;

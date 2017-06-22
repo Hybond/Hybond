@@ -110,13 +110,23 @@ html, body {
   }
   footer.g {
     padding: 30px 15px;
-    padding-bottom: 40px;
+    padding-bottom: 60px;
     line-height: 1.5;
     font-size: 14px;
     color: #888;
     a {
       text-decoration: none;
       color: #333;
+    }
+    .footer-links {
+      a {
+        @media screen and (min-width: 768px) {
+          margin: 0 .5em;
+          &:first-child {
+            margin-left: 0;
+          }
+        }
+      }
     }
   }
 }
@@ -229,10 +239,32 @@ $chartColor: #232c38;
     margin-right: 10px;
     border-radius: 100%;
   }
+  a {
+    text-decoration: none;
+    color: $primaryColor;
+    &:hover {
+      border-bottom: 2px solid $primaryColor;
+    }
+  }
+  code {
+    border: 1px solid #efefef;
+    background: #fafafa;
+    padding: 2.5em 1.7em 1em;
+    font-size: 13px;
+    position: relative;
+    &::after {
+      content: 'code';
+      position: absolute;
+      left: 1.7em;
+      top: .5em;
+      color: #858585;
+      font-size: 80%;
+    }
+  }
   .details {
     width: 100%;
     @media screen and (min-width: 992px) {
-      width: 40%;
+      width: 35%;
     }
     float: left;
     h2 {
@@ -320,7 +352,6 @@ $chartColor: #232c38;
           }
           .link-return {
             position: absolute;
-            border: 1px solid #43a047;
             right: 0;
             top: 0;
             width: 320px;
@@ -330,9 +361,6 @@ $chartColor: #232c38;
             visibility: hidden;
             text-align: center;
             line-height: 40px;
-            &.details-tooltip-success {
-              color: #43a047;
-              animation:inAndOutFade 2s .2s ease both;}
             @keyframes inAndOutFade{
               0% {opacity:0;
               visibility: hidden;}
@@ -343,9 +371,32 @@ $chartColor: #232c38;
               100% {opacity:0;
               visibility: hidden;}
             }
+            &.details-tooltip-success {
+              $color: #43a047;
+              color: $color;
+              border: 1px solid $color;
+              animation:inAndOutFade 2s .2s ease both;
+            }
+            &.details-tooltip-error {
+              $color: #d93737;
+              color: $color;
+              border: 1px solid $color;
+              animation:inAndOutFade 2s .2s ease both;
+            }
           }
         }
       }
+    }
+  }
+  .install {
+    width: 100%;
+    @media screen and (min-width: 992px) {
+      width: 65%;
+    }
+    float: right;
+    h2 {
+      padding-top: .2em;
+      padding-bottom: .3em;
     }
   }
 }

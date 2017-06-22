@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './swiper.js'
 
 import './styles/normalize.css';
 import './styles/h5bp.css';

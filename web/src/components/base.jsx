@@ -1,5 +1,6 @@
 import React from 'react';
 import Introduction from './introduction.jsx'
+import '../js/swiper.js'
 
 import config from '../config.js'
 
@@ -18,7 +19,7 @@ class Base extends React.Component {
   }
 }
 
-function Header () {
+function Header() {
   return (
     <header className='g'>
       <div className="container">
@@ -90,10 +91,14 @@ class MainPart extends React.Component {
   }
 }
 
-function Footer () {
+function Footer() {
   return (
     <footer className='container g'>
-      <p><a href='https://github.com/Hybond/Hybond' target='_blank'>Github</a> · <a href={site_url + '/about'}>关于</a></p>
+      <p className='footer-links'>
+        <a href='https://github.com/Hybond/Hybond' target='_blank'>Github</a><span> · </span>
+        <a href={site_url + '/about'}>关于</a><span> · </span>
+        <a href='javascript: alert("todo!")'>I18N</a>
+      </p>
       Designed and built with all the love in China by @Dimpurr, @Dring and @Rozc.<br />
       本项目源码受 <a href='https://github.com/Hybond/Hybond/blob/master/LICENSE' target='_blank'>MIT</a> 开源协议保护，文档受 <a href='https://creativecommons.org/licenses/by/3.0/' target='_blank'>CC BY 3.0</a> 开源协议保护。
     </footer>
@@ -131,7 +136,7 @@ class FlowChart extends React.Component {
   }
 }
 
-function FlowSection (props) {
+function FlowSection(props) {
   let values = props.values.slice(), colors = props.colors.slice();
   function buildTags(){
     var tags = [];
@@ -140,7 +145,7 @@ function FlowSection (props) {
     }
     return tags;
   }
-  function Tags (props) {
+  function Tags(props) {
     return (<button className='flow-chart-tag'><div className='flow-chart-color' style={{backgroundColor: props.color}}></div>{props.value}</button>);
   }
   // work out width
