@@ -399,4 +399,27 @@ $chartColor: #232c38;
       padding-bottom: .3em;
     }
   }
+  .docs {
+    width: 100%;
+    @media screen and (min-width: 992px) {
+      width: 35%;
+      padding-top: .4em;
+    }
+    float: left;
+    h2 {
+      padding-top: .2em;
+      padding-bottom: .3em;
+    }
+    ul {
+      padding: 0;
+      margin: 0;
+      @media screen and (max-width: 768px) {
+        column-width: 300px;
+      }
+      li {
+        list-style: none;
+        line-height: 2;
+      }
+    }
+  }
 }

@@ -11,13 +11,19 @@ class Introduction extends React.Component {
       homepage: 'https://facebook.github.io/react/',
       sourceCode: 'https://github.com/facebook/react',
       docs: 'https://facebook.github.io/react/docs/hello-world.html',
-    }
+    };
+    let docsList = [
+      ['React 技术栈系列教程', 'http://www.ruanyifeng.com/blog/2016/09/react-technology-stack.html'],
+      ['React 入门实例教程', 'http://www.ruanyifeng.com/blog/2015/03/react.html'],
+      ['ReactJS Tutorial', 'http://www.tutorialspoint.com/reactjs/index.htm']
+    ]
 
     return (
       <div className='container introduction'>
         <IntroHeader partName='前端库' color='#8e24aa' projName='React' projDes='A declarative, efficient, and flexible JavaScript library for building user interfaces.' />
         <IntroDetials list={detialList} />
         <IntroInstall />
+        <IntroDocs list={docsList} />
         <div className='clearfix'></div>
       </div>
     );
@@ -129,7 +135,7 @@ class IntroInstall extends React.Component {
   render () {
     // TODO: Delete these dev data
     function DevData() {
-      let data = '<h3>使用包管理工具</h3> <p>使用 Yarn 安装：</p> <pre><code>yarn init\nyarn add react react-dom </code></pre> <p>使用 npm 安装：</p> <pre><code>npm init\nnpm install --save react react-dom </code></pre> <h3>使用 CDN</h3> <p>开发版本：</p> <pre><code>&lt;script src=&quot;https://unpkg.com/react@15/dist/react.js&quot;&gt;&lt;/script&gt;\n&lt;script src=&quot;https://unpkg.com/react-dom@15/dist/react-dom.js&quot;&gt;&lt;/script&gt; </code></pre> <p>生产版本：</p> <pre><code>&lt;script src=&quot;https://unpkg.com/react@15/dist/react.min.js&quot;&gt;&lt;/script&gt;\n&lt;script src=&quot;https://unpkg.com/react-dom@15/dist/react-dom.min.js&quot;&gt;&lt;/script&gt; </code></pre> <h3>其它方式</h3> <p>使用 Create React App：</p> <pre><code>npm install -g create-react-app\ncreate-react-app my-app\n\ncd my-app\nnpm start </code></pre> <p><a href="https://facebook.github.io/react/docs/installation.html#creating-a-new-application">了解更多</a></p> <p><a href="https://facebook.github.io/react/docs/installation.html#creating-a-new-application">更多安装方式</a></p>';
+      let data = '<h3>使用包管理工具</h3> <p>使用 Yarn 安装：</p> <pre><code>yarn init\nyarn add react react-dom </code></pre> <p>使用 npm 安装：</p> <pre><code>npm init\nnpm install --save react react-dom </code></pre> <h3>使用 CDN</h3> <p>开发版本：</p> <pre><code>&lt;script src=&quot;https://unpkg.com/react@15/dist/react.js&quot;&gt;&lt;/script&gt;\n&lt;script src=&quot;https://unpkg.com/react-dom@15/dist/react-dom.js&quot;&gt;&lt;/script&gt; </code></pre> <p>生产版本：</p> <pre><code>&lt;script src=&quot;https://unpkg.com/react@15/dist/react.min.js&quot;&gt;&lt;/script&gt;\n&lt;script src=&quot;https://unpkg.com/react-dom@15/dist/react-dom.min.js&quot;&gt;&lt;/script&gt; </code></pre> <h3>其它方式</h3> <p>使用 Create React App：</p> <pre><code>npm install -g create-react-app\ncreate-react-app my-app\n\ncd my-app\nnpm start </code></pre> <p><a href="https://facebook.github.io/react/docs/installation.html#creating-a-new-application" target="_blank">了解更多</a></p> <p><a href="https://facebook.github.io/react/docs/installation.html#creating-a-new-application" target="_blank">更多安装方式</a></p>';
       return (
         <Highlight innerHTML={true}>
           {data}
@@ -143,6 +149,24 @@ class IntroInstall extends React.Component {
       </div>
     );
   }
+}
+
+function IntroDocs(props) {
+  let list = props.list, outputList = [];
+  for (let i = 0; i < list.length; i++) {
+    outputList.push(
+      <li>
+        <a href={list[i][1]} target='_blank'>{list[i][0]}</a>
+      </li>
+    );
+  }
+
+  return (
+    <div className='docs'>
+      <h2>推荐阅读</h2>
+      <ul>{outputList}</ul>
+    </div>
+  );
 }
 
 export default Introduction;
