@@ -1,8 +1,15 @@
 import React from 'react';
-import Introduction from './introduction.jsx'
-import '../js/swiper.js'
+import Introduction from './introduction.jsx';
+import Manage from './manage.jsx';
+import '../js/swiper.js';
 
-import config from '../config.js'
+import config from '../config.js';
+
+// Just for development
+// TODO: Delete and rewrite the config after development.
+let devConfig = {
+  flowChart: false,
+}
 
 // The site's url
 const site_url = config.site_url;
@@ -58,11 +65,11 @@ class MainPart extends React.Component {
   constructor () {
     super();
     this.state = {
-      title: 'Hybond', // TODO: change this.
-      description: 'A Magical Bond for Hybrid Developer',
-      titleLink: 'http://hybond.code.moe/',
-      isFlowChart: true,
-      pageType: 'Introduction', // The type of the page.
+      title: '项目管理', // TODO: change this.
+      description: null, // Description of the project or the page
+      titleLink: null, // Link of the project or the page
+      isFlowChart: devConfig.flowChart,
+      pageType: 'Manage', // The type of the page. Value = Introduction | Manage
     };
   }
 
@@ -72,6 +79,11 @@ class MainPart extends React.Component {
       case 'Introduction':
         mainContent = (
           <Introduction />
+        );
+        break;
+      case 'Manage':
+        mainContent = (
+          <Manage />
         );
         break;
       default:

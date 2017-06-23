@@ -36,6 +36,47 @@ html, body {
   float: right;
 }
 
+// Webfont
+
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(../fonts/MaterialIcons-Regular.eot); /* For IE6-8 */
+  src: local('Material Icons'),
+    local('MaterialIcons-Regular'),
+    url(../fonts/MaterialIcons-Regular.woff2) format('woff2'),
+    url(../fonts/MaterialIcons-Regular.woff) format('woff'),
+    url(../fonts/MaterialIcons-Regular.ttf) format('truetype');
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  //font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
+// Main components
+
 #root {
   header.g {
     background: $primaryColor;
@@ -418,8 +459,114 @@ $chartColor: #232c38;
       }
       li {
         list-style: none;
-        line-height: 2;
+        line-height: 1.8;
+        padding-bottom: .2em;
       }
+    }
+  }
+}
+
+// Manage
+
+.manage {
+  background: #eee;
+  min-height: 200px;
+  margin-bottom: -50px;
+  @media screen and (max-width: 768px) {
+    &.container {
+      padding: 0 !important;
+    }
+  }
+  a {
+    text-decoration: none;
+    color: $primaryColor;
+    border-bottom: 2px solid rgba(#000, 0);
+    &:hover {
+      border-bottom-color: $primaryColor;
+    }
+  }
+  .manage-list {
+    padding: 2.5em 0;
+    @media screen and (max-width: 768px) {
+      padding: 0;
+    }
+    margin: 0;
+    li {
+      display: block;
+      list-style: none;
+      background: #fff;
+      margin-bottom: 1em;
+      padding: 1em 1.5em;
+      border: 1px solid #dddddd;
+      @media screen and (max-width: 768px) {
+        margin: 0;
+        border: none;
+        border-bottom: 1px solid #dddddd;
+        &:first-child {
+          border-top: 1px solid #dddddd;
+        }
+      }
+      &:last-child {
+        margin-bottom: 0;
+      }
+      a {
+        display: inline-block;
+        font-size: 120%;
+      }
+      .description {
+        display: block;
+      }
+      .manage-list-left {
+        float: left;
+        @media screen and (min-width: 768px) {
+          max-width: 722px;
+        }
+      }
+      .manage-list-right {
+        float: right;
+        @media screen and (max-width: 768px) {
+          display: none;
+        }
+        button {
+          border: none;
+          outline: none;
+          height: 50px;
+          background: none;
+          display: -webkit-flex;
+          display: -ms-flex;
+          display: inline-flex;
+          font-size: 24px;
+          margin-left: 20px;
+          opacity: .5;
+          transition: all .3s;
+          &:hover {
+            opacity: .85;
+          }
+        }
+      }
+    }
+  }
+  .manage-page {
+    display: block;
+    list-style: none;
+    background: $primaryColor;
+    padding: 1em 1.5em;
+    border: 1px solid $primaryColorDark;
+    color: #fff;
+    @media screen and (max-width: 768px) {
+      margin: 0;
+      border: none;
+    }
+    @mixin manage-page-num {
+      font-size: 21px;
+      overflow: hidden;
+      display: inline-block;
+    }
+    .manage-page-num-current {
+      @include manage-page-num;
+    }
+    .manage-page-num-all {
+      @include manage-page-num;
     }
   }
 }
