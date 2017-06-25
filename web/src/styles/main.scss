@@ -499,6 +499,7 @@ $chartColor: #232c38;
       margin-bottom: 1em;
       padding: 1em 1.5em;
       border: 1px solid #dddddd;
+      position: relative;
       @media screen and (max-width: 768px) {
         margin: 0;
         border: none;
@@ -591,34 +592,57 @@ $chartColor: #232c38;
     }
   }
   .manage-alert {
-    $red: #d32f2f;
-    border: 3px solid $red;
+    $red: #c62828;
+    width: 430px;
+    visibility: hidden;
     margin-top: 1em;
     padding: .5em 2em;
     padding-bottom: 2em;
-    position: relative;
+    position: absolute;
+    right: 0;
+    top: 50px;
+    background: $red;
+    color: #fff;
+    box-shadow: 0 3px 3px rgba(#000, .3);
+    transform-origin: 390px 0px 0px;
+    opacity:0;
+    transform: scale(.7);
+    z-index: 10;
+    transition: all .3s;
+    &.show {
+      visibility: visible;
+      opacity:1;
+      transform: scale(1);
+    }
     header {
       button {
         line-height: 1;
         border: none;
         background: none;
-        font-size: 30px;
+        font-size: 22px;
         position: absolute;
         right: 30px;
         top: 24px;
         outline: none;
         padding: 0;
-        color: $red;
       }
     }
     h3 {
-      color: $red;
       display: -webkit-flex;
       display: -ms-flex;
       display: flex;
       line-height: 1;
       i {
         margin-right: .5em;
+      }
+    }
+    .description {
+      line-height: 1.5;
+      font-size: 80%;
+      color: #f4d4d4;
+      margin-top: 2em;
+      span {
+        color: #fff;
       }
     }
     .proj-name {
@@ -629,28 +653,33 @@ $chartColor: #232c38;
     }
     .manage-alert-input {
       position: relative;
+      background: none;
+      margin-bottom: 20px;
       .manage-alert-alt {
         position: absolute;
         left: 0;
-        top: 13px;
+        top: 23px;
         font-size: 20.8px;
-        color: #969696;
-        transition: all .4s;
+        color: #fff;
+        opacity: .3;
+        z-index: -1;
+        transition: all cubic-bezier(.25,.8,.25,1) .4s;
       }
     }
     input:focus + .manage-alert-alt, input.have-content + .manage-alert-alt {
-      top: -2px;
+      top: 5px;
       font-size: 10px;
-      color: $red;
+      color: #fff;
+      opacity: .8;
     }
     input {
       font-size: 130%;
       padding: .25em 0;
+      background: none;
       border: none;
-      border-bottom: 1px solid $red;
+      border-bottom: 1px solid #fff;
+      margin-top: 20px;
       margin-bottom: 2px;
-      margin-top: 10px;
-      color: $red;
       outline: none;
       transition: border-bottom-width .3s, margin-bottom .3s;
       &:focus {
@@ -659,13 +688,17 @@ $chartColor: #232c38;
       }
     }
     > button {
+      outline: none;
       background: none;
       border: none;
       float: right;
       padding: .5em 1.4em;
       margin-left: 5px;
+      transition: background .3s;
+      &:hover {
+        background: rgba(#fff, .1);
+      }
       &.manage-alert-delete {
-        color: $red;
       }
     }
   }

@@ -34,21 +34,35 @@ class ProjectList extends React.Component {
   }
 }
 
-function Project() {
-  return (
-    <li>
-      <div className='manage-list-left'>
-        <a className='proj-name' href={site_url + '/codemoe/hybond/'}>Hybond</a>
-        <span className='description'>A Magical Bond for Hybrid Developer</span>
-      </div>
-      <div className='manage-list-right'>
-        <button className='manage-list-edit'><i className='material-icons'>edit</i></button>
-        <button className='manage-list-delete'><i className='material-icons'>delete</i></button>
-      </div>
-      <div className='clearfix'></div>
-      <ManageAlert />
-    </li>
-  );
+class Project extends React.Component {
+  constructor () {
+    super();
+    this.toggleAlert = this.toggleAlert.bind(this);
+    this.state = {
+      isAlert: false,
+    };
+  }
+
+  toggleAlert () {
+    this.setState({isAlert: !this.state.isAlert});
+  }
+
+  render () {
+    return (
+      <li>
+        <div className='manage-list-left'>
+          <a className='proj-name' href={site_url + '/codemoe/hybond/'}>Hybond</a>
+          <span className='description'>A Magical Bond for Hybrid Developer</span>
+        </div>
+        <div className='manage-list-right'>
+          <button className='manage-list-edit'><i className='material-icons'>edit</i></button>
+          <button className='manage-list-delete' onClick={this.toggleAlert}><i className='material-icons'>delete</i></button>
+        </div>
+        <div className='clearfix'></div>
+        <ManageAlert isAlert={this.state.isAlert} toggleAlert={this.toggleAlert} />
+      </li>
+    );
+  }
 }
 
 class ManageAlert extends React.Component {
@@ -71,18 +85,19 @@ class ManageAlert extends React.Component {
   }
 
   render () {
+    let tagClass = this.props.isAlert ? ' show' : '';
     return (
-      <div className='manage-alert'>
+      <div className={'manage-alert' + tagClass}>
         <header>
           <h3><i className='material-icons'>warning</i> 危险操作</h3>
-          <p>
+          <p className='description'>
             您确定要删除项目 <span className='proj-name'>Hybond</span> 吗？这一操作不可逆，请谨慎操作。<br />
             如果您确定要这么做，请输入项目名称（<span className='proj-name'>Hybond</span>）：
           </p>
-          <button><i className='material-icons'>close</i></button>
+          <button onClick={this.props.toggleAlert}><i className='material-icons'>close</i></button>
         </header>
         <div className='manage-alert-input'><input type='text' className={this.state.className} onChange={this.handleChange} value={this.state.value} /><span className='manage-alert-alt'>项目名称</span></div><br />
-        <button>取消</button><button className='manage-alert-delete'>永久删除</button>
+        <button onClick={this.props.toggleAlert}>取消</button><button className='manage-alert-delete'>永久删除</button>
         <div className='clearfix'></div>
       </div>
     );
