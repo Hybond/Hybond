@@ -98,6 +98,10 @@ class LinkList extends React.Component {
     });
   }
 
+  componentDidMount () {
+    this.linkReturn.addEventListener('animationend', () => this.setState({copyClass: 'link-return'}));
+  }
+
   getHost (url) {
     // get host from a url, e.g. http://test.example.com/test#yes -> test.example.com
     let regex = /^((\w+):\/\/)?((\w+):?(\w+)?@)?([^\/\?:]+):?(\d+)?(\/?[^\?#]+)?\??([^#]+)?#?(\w*)/;
@@ -116,15 +120,12 @@ class LinkList extends React.Component {
           <div className='details-tooltip'>
             <input type='text' className={'linkInput-'+this.props.copyNum} defaultValue={this.props.link} ref={input => this.linkInput = input} onChange={(e) => e.target.value = this.props.link} />
             <ClipboardButton onSuccess={this.onSuccess} onError={this.onError} data-clipboard-text={this.props.link}>复制</ClipboardButton>
-            <LinkReturn classes={this.state.copyClass} copyResult={this.state.copyResult} />
+            <div className={this.state.copyClass} ref={linkReturn => this.linkReturn = linkReturn}>{this.state.copyResult}</div>
           </div>
         </div>
       </li>
     );
   }
-}
-function LinkReturn(props) {
-  return (<div className={props.classes}>{props.copyResult}</div>);
 }
 
 class IntroInstall extends React.Component {

@@ -1,6 +1,7 @@
 import React from 'react';
 import Introduction from './introduction.jsx';
 import Manage from './manage.jsx';
+import Guide from './guide.jsx';
 import '../js/swiper.js';
 
 import config from '../config.js';
@@ -65,11 +66,11 @@ class MainPart extends React.Component {
   constructor () {
     super();
     this.state = {
-      title: '项目管理', // TODO: change this.
+      title: '技术选型向导', // TODO: change this.
       description: null, // Description of the project or the page
       titleLink: null, // Link of the project or the page
       isFlowChart: devConfig.flowChart,
-      pageType: 'Manage', // The type of the page. Value = Introduction | Manage
+      pageType: 'Manage', // The type of the page. Value = Introduction | Manage | Guide
     };
   }
 
@@ -84,6 +85,11 @@ class MainPart extends React.Component {
       case 'Manage':
         mainContent = (
           <Manage />
+        );
+        break;
+      case 'Guide':
+        mainContent = (
+          <Guide />
         );
         break;
       default:

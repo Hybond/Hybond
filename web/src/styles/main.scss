@@ -122,6 +122,12 @@ html, body {
     padding: 30px 0;
     padding-bottom: 50px;
     min-height: 400px;
+    border-radius: 2px;
+    box-shadow: 0 3px 2px rgba(#000, .1);
+    @media screen and (max-width: 768px) {
+      border-radius: 0;
+      box-shadow: none;
+    }
     .container {
       padding: 0 45px;
     }
@@ -129,7 +135,7 @@ html, body {
     h1.big {
       font-size: 3em;
       text-align: center;
-      font-weight: lighter;
+      font-weight: bold;
     }
     h1 {
       font-size: 2.6em;
@@ -264,7 +270,7 @@ $chartColor: #232c38;
     font-size: 1.7em;
   }
   .proj-name {
-    font-weight: lighter;
+    font-weight: bold;
     margin-top: .3em;
     margin-bottom: 0;
   }
@@ -294,6 +300,7 @@ $chartColor: #232c38;
     padding: 2.5em 1.7em 1em;
     font-size: 13px;
     position: relative;
+    border-radius: 2px;
     &::after {
       content: 'code';
       position: absolute;
@@ -351,6 +358,7 @@ $chartColor: #232c38;
           }
         }
         .details-tooltip {
+          z-index: 10;
           width: 330px;
           height: 40px;
           visibility: hidden;
@@ -370,13 +378,14 @@ $chartColor: #232c38;
             border: 1px solid #dfdfdf;
             display: inline-block;
             background: #fff;
+            border-radius: 2px;
             &::selection, &-moz-::selection {
               background: rgba(#000, .05);
             }
           }
           button {
             position: absolute;
-            z-index: 5;
+            z-index: 4;
             top: 0;
             right: 0;
             width: 95px;
@@ -391,6 +400,7 @@ $chartColor: #232c38;
             color: $primaryColor;
             display: inline-block;
             outline: none;
+            border-radius: 0 2px 2px 0;
           }
           .link-return {
             position: absolute;
@@ -403,6 +413,7 @@ $chartColor: #232c38;
             visibility: hidden;
             text-align: center;
             line-height: 40px;
+            border-radius: 2px;
             @keyframes inAndOutFade{
               0% {opacity:0;
               visibility: hidden;}
@@ -473,6 +484,7 @@ $chartColor: #232c38;
   background: #eee;
   min-height: 200px;
   margin-bottom: -50px;
+  padding: 30px 45px !important;
   @media screen and (max-width: 768px) {
     &.container {
       padding: 0 !important;
@@ -487,29 +499,38 @@ $chartColor: #232c38;
     }
   }
   .manage-list {
-    padding: 2.5em 0;
+    padding: 0;
+    margin-bottom: 2.5em;
     @media screen and (max-width: 768px) {
-      padding: 0;
+      margin: 0;
     }
-    margin: 0;
+    box-shadow: 0 3px 2px rgba(#000, .1);
+    border-radius: 2px;
     li {
       display: block;
       list-style: none;
       background: #fff;
-      margin-bottom: 1em;
+      margin-bottom: 0;
       padding: 1em 1.5em;
-      border: 1px solid #dddddd;
+      border-bottom: 1px solid #ddd;
       position: relative;
       @media screen and (max-width: 768px) {
         margin: 0;
         border: none;
         border-bottom: 1px solid #dddddd;
+        border-radius: 0;
+        box-shadow: 0;
         &:first-child {
           border-top: 1px solid #dddddd;
         }
       }
+      &:first-child {
+        border-radius: 2px 2px 0 0;
+      }
       &:last-child {
+        border-radius: 0 0 2px 2px;
         margin-bottom: 0;
+        border-bottom: none;
       }
       a {
         display: inline-block;
@@ -553,9 +574,10 @@ $chartColor: #232c38;
     list-style: none;
     background: $primaryColor;
     padding: 1em 1.5em;
-    border: 1px solid $primaryColorDark;
     color: #fff;
     font-size: 21px;
+    border-radius: 2px;
+    box-shadow: 0 3px 2px rgba(#000, .1);
     > div {
       display: -webkit-inline-flex;
       display: -ms-inline-flex;
@@ -565,6 +587,8 @@ $chartColor: #232c38;
     @media screen and (max-width: 768px) {
       margin: 0;
       border: none;
+      border-radius: 0;
+      box-shadow: none;
     }
     .manage-page-num {
       i {
@@ -609,6 +633,7 @@ $chartColor: #232c38;
     transform: scale(.7);
     z-index: 10;
     transition: all .3s;
+    border-radius: 2px;
     &.show {
       visibility: visible;
       opacity:1;

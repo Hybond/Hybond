@@ -8,20 +8,12 @@ class Manage extends React.Component {
   render () {
     return (
       <div className='container manage'>
-        <ProjectList />
-      </div>
-    );
-  }
-}
-
-class ProjectList extends React.Component {
-  render () {
-    return (
-      <ul className='manage-list'>
-        <Project />
-        <Project />
-        <Project />
-        <Project />
+        <ul className='manage-list'>
+          <Project />
+          <Project />
+          <Project />
+          <Project />
+        </ul>
         <p className='manage-page'>
           <div>
             <button className='manage-page-btn'><i className='material-icons'>arrow_back</i></button>
@@ -29,7 +21,7 @@ class ProjectList extends React.Component {
             <button className='manage-page-btn'><i className='material-icons'>arrow_forward</i></button>
           </div>
         </p>
-      </ul>
+      </div>
     );
   }
 }
