@@ -209,34 +209,36 @@ $chartColor: #232c38;
     column-width:160px;
     column-gap: 10px;
     position: relative;
-    &:first-child {
-      &::before {
-        content: '';
-        display: block;
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 60px;
-        height: 100%;
-        background: none;
-        background: linear-gradient(right , rgba($chartColor, 0) , $chartColor 100%);
-        background: -webkit-linear-gradient(right , rgba($chartColor, 0) , $chartColor 100%);
-        background: -moz-linear-gradient(right , rgba($chartColor, 0) , $chartColor 100%);
+    @media screen and (min-width: 768px) {
+      &:first-child {
+        &::before {
+          content: '';
+          display: block;
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 60px;
+          height: 100%;
+          background: none;
+          background: linear-gradient(right , rgba($chartColor, 0) , $chartColor 100%);
+          background: -webkit-linear-gradient(right , rgba($chartColor, 0) , $chartColor 100%);
+          background: -moz-linear-gradient(right , rgba($chartColor, 0) , $chartColor 100%);
+        }
       }
-    }
-    &:last-child {
-      &::before {
-        content: '';
-        display: block;
-        position: absolute;
-        right: 0;
-        top: 0;
-        width: 60px;
-        height: 100%;
-        background: none;
-        background: linear-gradient(left , rgba($chartColor, 0) , $chartColor 100%);
-        background: -webkit-linear-gradient(left , rgba($chartColor, 0) , $chartColor 100%);
-        background: -moz-linear-gradient(left , rgba($chartColor, 0) , $chartColor 100%);
+      &:last-child {
+        &::before {
+          content: '';
+          display: block;
+          position: absolute;
+          right: 0;
+          top: 0;
+          width: 60px;
+          height: 100%;
+          background: none;
+          background: linear-gradient(left , rgba($chartColor, 0) , $chartColor 100%);
+          background: -webkit-linear-gradient(left , rgba($chartColor, 0) , $chartColor 100%);
+          background: -moz-linear-gradient(left , rgba($chartColor, 0) , $chartColor 100%);
+        }
       }
     }
     button {
