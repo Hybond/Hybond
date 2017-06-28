@@ -9,7 +9,7 @@ import config from '../config.js';
 // Just for development
 // TODO: Delete and rewrite the config after development.
 let devConfig = {
-  flowChart: false,
+  flowChart: true,
 }
 
 // The site's url
@@ -70,7 +70,7 @@ class MainPart extends React.Component {
       description: null, // Description of the project or the page
       titleLink: null, // Link of the project or the page
       isFlowChart: devConfig.flowChart,
-      pageType: 'Manage', // The type of the page. Value = Introduction | Manage | Guide
+      pageType: 'Guide', // The type of the page. Value = Introduction | Manage | Guide
     };
   }
 

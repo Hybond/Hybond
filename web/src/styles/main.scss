@@ -208,30 +208,67 @@ $chartColor: #232c38;
     display: inline-block;
     column-width:160px;
     column-gap: 10px;
+    position: relative;
+    &:first-child {
+      &::before {
+        content: '';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 60px;
+        height: 100%;
+        background: none;
+        background: linear-gradient(right , rgba($chartColor, 0) , $chartColor 100%);
+        background: -webkit-linear-gradient(right , rgba($chartColor, 0) , $chartColor 100%);
+        background: -moz-linear-gradient(right , rgba($chartColor, 0) , $chartColor 100%);
+      }
+    }
+    &:last-child {
+      &::before {
+        content: '';
+        display: block;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 60px;
+        height: 100%;
+        background: none;
+        background: linear-gradient(left , rgba($chartColor, 0) , $chartColor 100%);
+        background: -webkit-linear-gradient(left , rgba($chartColor, 0) , $chartColor 100%);
+        background: -moz-linear-gradient(left , rgba($chartColor, 0) , $chartColor 100%);
+      }
+    }
     button {
       text-align: left;
       width: 160px;
-      background: rgba(0, 0, 0, .15);
+      height: 40px;
+      border-radius: 20px;
+      background: rgba(#000, .15);
       margin-bottom: 10px;
       border: none;
-      padding: 10px 0;
       padding-left: 40px;
       padding-right: 15px;
       outline: none;
       position: relative;
-      border: 1px solid rgba($primaryColorLight, .3);
-      transition: border .3s;
+      transition: all .3s;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: rgba(#fff, .8);
+      font-weight: bold;
       &:hover {
-        border-color: rgba($primaryColorLight, .6);
+        background: rgba(#000, .3);
+        color: #fff;
       }
       .flow-chart-color {
         position: absolute;
-        left: 15px;
-        top: 21px;
-        margin-top: -5.5px;
+        left: 14px;
+        top: 20px;
+        margin-top: -7px;
         display: inline-block;
-        width: 11px;
-        height: 11px;
+        width: 14px;
+        height: 14px;
         margin-right: 8px;
         border-radius: 100%;
       }
@@ -250,7 +287,7 @@ $chartColor: #232c38;
         box-shadow: 0 0 0 5px rgba(245, 245, 246, 0.12);
       }
       font-size: 1.2em;
-      font-weight: lighter;
+      color: #a3b1c3;
       position: absolute;
       top: 61px;
       left: 70px;
