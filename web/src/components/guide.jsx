@@ -127,16 +127,36 @@ function GuideControl(props) {
 }
 
 class GuideSection extends React.Component {
-  constructor () {
+  constructor (props) {
     super();
+
+    // Initate checkList
+    let flow = props.flow, checkList = [];
+    for (let i in flow.hot) {
+      checkList.push(false);
+    }
+
     this.state = {
       flow: {},
-      title: '',
-      hot: [],
+      checkList: checkList,
     };
   }
 
   componentWillMount () {
+    this.setState({
+      flow: this.props.flow,
+    });
+  }
+
+  handleCheck (i) {
+    let checkList = this.state.checkList.slice();
+    checkList[i] = !checkList[i];
+    this.setState({
+      checkList: checkList,
+    });
+  }
+
+  render () {
     let
       flow = this.props.flow,
       title = flow.name,
@@ -144,29 +164,27 @@ class GuideSection extends React.Component {
 
     for (let i in flow.hot) {
       hot.push(
-        <GuideCard flowName={flow.name} color={flow.hot[i].color} name={flow.hot[i].name} description={flow.hot[i].description} link={flow.hot[i].link} />
+        <GuideCard
+          flowName={flow.name}
+          color={flow.hot[i].color}
+          name={flow.hot[i].name}
+          description={flow.hot[i].description}
+          link={flow.hot[i].link}
+          handleCheck={() => this.handleCheck(i)}
+          checked={this.state.checkList[i]} />
       );
     }
 
     flow = null;
 
-    this.setState({
-      flow: this.props.flow,
-      title: title,
-      hot: hot,
-    });
-  }
-  //<GuideCard flowName='test' color='#6cf' name='test' description='yes.' />
-
-  render () {
     return (
       <section>
         <div className='clearfix'></div>
-        <h2>{this.state.title}</h2>
+        <h2>{title}</h2>
         <div className='guide-page'>
           <h3>热门项目</h3>
           <div className='guide-hot'>
-            {this.state.hot}
+            {hot}
           </div>
           <h3>所有项目</h3>
           <div className='guide-all'>
@@ -178,14 +196,20 @@ class GuideSection extends React.Component {
 }
 
 function GuideCard(props) {
-  let link = props.link;
+  let
+    link = props.link,
+    icon = props.checked ? 'check_box' : 'check_box_outline_blank',
+    checkClass = props.checked ? ' checked' : '';
   return (
     <div className='guide-card'>
       <div className='guide-wrap'>
         <span>{props.flowName}</span>
         <div className='tag' style={{backgroundColor: props.color}}><div className='tag-dot' style={{backgroundColor: props.color}}></div>{props.name}</div>
         <p className='description'>{props.description}</p>
-        <footer><button className='more'>了解更多</button><button className='check'><i className='material-icons'>check_box_outline_blank</i></button></footer>
+        <footer>
+          <button className='more'>了解更多</button>
+          <button className={'check' + checkClass} onClick={props.handleCheck}><i className='material-icons'>{icon}</i></button>
+        </footer>
       </div>
     </div>
   );

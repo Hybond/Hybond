@@ -773,6 +773,7 @@ $chartColor: #232c38;
 // Guide
 
 .guide {
+  margin-bottom: -50px;
   .guide-control {
     margin-top: -40px;
     &.fixed {
@@ -854,7 +855,27 @@ $chartColor: #232c38;
   }
   .guide-sections {
     background: #eee;
+    h2, h3 {
+      padding: 0 35px;
+    }
+    h2 {
+      opacity: .7;
+    }
+    h3 {
+      opacity: .4;
+    }
+    section {
+      &:first-child {
+        padding-top: 20px;
+      }
+      &:last-child {
+        padding-bottom: 30px;
+      }
+    }
     .guide-page {
+      h3 {
+        display: none;
+      }
       .guide-hot, .guide-all {
         padding: 0 25px;
         //column-gap: 25px;
@@ -967,6 +988,9 @@ $chartColor: #232c38;
                 float: right;
                 font-size: 21px;
                 padding: 0;
+                &.checked {
+                  color: $primaryColor;
+                }
               }
             }
           }
