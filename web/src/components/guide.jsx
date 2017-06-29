@@ -16,23 +16,36 @@ class Guide extends React.Component {
       fixedClass: '',
       fixTime: 0,
       timeout: 0,
+      mainContent: [],
     };
   }
 
   componentDidMount () {
     // Get data. 模拟获取数据
     const flow = devConfig.devFlow;
-    //
-    let flowId = [], flowName = [];
+
+    // Control filter
+    let
+      flowId = [],
+      flowName = [],
+      mainContent = [];
     for (let i in flow) {
       flowId.push(flow[i].id);
       flowName.push(flow[i].name);
+      mainContent.push(
+        <GuideSection flow={flow[i]} />
+      );
     }
     this.setState({
       controlFlow: {id: flowId, name: flowName},
       guideTop: getTop(this.guide), // Fixed header
       fixTime: new Date(),
+      mainContent: mainContent, // Output main content
     });
+
+    // Main content
+
+    // Fixed header
     function getTop(e) {
       var offset=e.offsetTop;
       if(e.offsetParent!=null) offset+=getTop(e.offsetParent);
@@ -81,7 +94,7 @@ class Guide extends React.Component {
       <div className='guide' ref={guide => this.guide = guide}>
         <GuideControl className={this.state.fixedClass} flows={this.state.controlFlow} />
         <div className='guide-sections'>
-          <div style={{height: 3000}}></div>
+          {this.state.mainContent}
         </div>
       </div>
     );
@@ -116,20 +129,63 @@ function GuideControl(props) {
 class GuideSection extends React.Component {
   constructor () {
     super();
+    this.state = {
+      flow: {},
+      title: '',
+      hot: [],
+    };
   }
+
+  componentWillMount () {
+    let
+      flow = this.props.flow,
+      title = flow.name,
+      hot = [];
+
+    for (let i in flow.hot) {
+      hot.push(
+        <GuideCard flowName={flow.name} color={flow.hot[i].color} name={flow.hot[i].name} description={flow.hot[i].description} link={flow.hot[i].link} />
+      );
+    }
+
+    flow = null;
+
+    this.setState({
+      flow: this.props.flow,
+      title: title,
+      hot: hot,
+    });
+  }
+  //<GuideCard flowName='test' color='#6cf' name='test' description='yes.' />
 
   render () {
     return (
       <section>
-        <h1>{this.props.title}</h1>
-
-        <div className='guide-hot'>
-        </div>
-        <div className='guide-other'>
+        <h2>{this.state.title}</h2>
+        <div className='guide-page'>
+          <h3>热门项目</h3>
+          <div className='guide-hot'>
+            {this.state.hot}
+          </div>
+          <h3>所有项目</h3>
+          <div className='guide-other'>
+          </div>
         </div>
       </section>
     );
   }
+}
+
+function GuideCard(props) {
+  let link = props.link;
+  return (
+    <div className='guide-card'>
+      <span>{props.flowName}</span>
+      <div className='tag' style={{backgroundColor: props.color}}><div className='tag-dot' style={{backgroundColor: props.color}}></div>{props.name}</div>
+      <p className='description'>{props.description}</p>
+      <div><button>了解更多</button><button><i className='material-icons'>check_box_outline_blank</i></button></div>
+    </div>
+  );
 }
 
 export default Guide;
