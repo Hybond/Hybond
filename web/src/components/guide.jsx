@@ -161,6 +161,7 @@ class GuideSection extends React.Component {
   render () {
     return (
       <section>
+        <div className='clearfix'></div>
         <h2>{this.state.title}</h2>
         <div className='guide-page'>
           <h3>热门项目</h3>
@@ -168,7 +169,7 @@ class GuideSection extends React.Component {
             {this.state.hot}
           </div>
           <h3>所有项目</h3>
-          <div className='guide-other'>
+          <div className='guide-all'>
           </div>
         </div>
       </section>
@@ -180,10 +181,12 @@ function GuideCard(props) {
   let link = props.link;
   return (
     <div className='guide-card'>
-      <span>{props.flowName}</span>
-      <div className='tag' style={{backgroundColor: props.color}}><div className='tag-dot' style={{backgroundColor: props.color}}></div>{props.name}</div>
-      <p className='description'>{props.description}</p>
-      <div><button>了解更多</button><button><i className='material-icons'>check_box_outline_blank</i></button></div>
+      <div className='guide-wrap'>
+        <span>{props.flowName}</span>
+        <div className='tag' style={{backgroundColor: props.color}}><div className='tag-dot' style={{backgroundColor: props.color}}></div>{props.name}</div>
+        <p className='description'>{props.description}</p>
+        <footer><button className='more'>了解更多</button><button className='check'><i className='material-icons'>check_box_outline_blank</i></button></footer>
+      </div>
     </div>
   );
 }
