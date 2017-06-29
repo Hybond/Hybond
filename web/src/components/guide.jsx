@@ -33,7 +33,7 @@ class Guide extends React.Component {
       flowId.push(flow[i].id);
       flowName.push(flow[i].name);
       mainContent.push(
-        <GuideSection flow={flow[i]} />
+        <GuideSection handleMore={(t) => this.handleMore(t)} flow={flow[i]} />
       );
     }
     this.setState({
@@ -52,6 +52,11 @@ class Guide extends React.Component {
       return offset;
     }
     window.addEventListener('scroll', this.handleWindowScroll);
+  }
+
+  handleMore (t) {
+    // Test transfer data.
+    console.log(t);
   }
 
   componentWillUnmount() {
@@ -135,10 +140,12 @@ class GuideSection extends React.Component {
     for (let i in flow.hot) {
       checkList.push(false);
     }
+    let openList = checkList.slice();
 
     this.state = {
       flow: {},
       checkList: checkList,
+      openList: openList,
     };
   }
 
@@ -156,6 +163,20 @@ class GuideSection extends React.Component {
     });
   }
 
+  handleMore (i, link) {
+    let openList = this.state.openList.slice();
+    for (let j in openList) {
+      if(j != i)
+        openList[j] = false;
+    }
+    openList[i] = !openList[i];
+    this.setState({
+      openList: openList,
+    });
+    if(openList[i])
+      this.props.handleMore(link);
+  }
+
   render () {
     let
       flow = this.props.flow,
@@ -171,7 +192,9 @@ class GuideSection extends React.Component {
           description={flow.hot[i].description}
           link={flow.hot[i].link}
           handleCheck={() => this.handleCheck(i)}
-          checked={this.state.checkList[i]} />
+          checked={this.state.checkList[i]}
+          handleMore={() => this.handleMore(i, 'test')}
+          open={this.state.openList[i]} />
       );
     }
 
@@ -199,17 +222,45 @@ function GuideCard(props) {
   let
     link = props.link,
     icon = props.checked ? 'check_box' : 'check_box_outline_blank',
-    checkClass = props.checked ? ' checked' : '';
+    checkClass = props.checked ? ' checked' : '',
+    openClass = props.open ? ' open' : '';
   return (
-    <div className='guide-card'>
+    <div className={'guide-card' + openClass}>
       <div className='guide-wrap'>
         <span>{props.flowName}</span>
         <div className='tag' style={{backgroundColor: props.color}}><div className='tag-dot' style={{backgroundColor: props.color}}></div>{props.name}</div>
         <p className='description'>{props.description}</p>
         <footer>
-          <button className='more'>了解更多</button>
+          <button className='more' onClick={props.handleMore}>了解更多</button>
           <button className={'check' + checkClass} onClick={props.handleCheck}><i className='material-icons'>{icon}</i></button>
         </footer>
+      </div>
+      <div className='guide-under'>
+        <div>
+          <div className='content'>
+            <h2>Title</h2>
+            <ul>
+              <li>test1</li>
+              <li>test2</li>
+              <li>test3</li>
+              <li>test4</li>
+            </ul>
+            <h2>Title</h2>
+            <ul>
+              <li>test1</li>
+              <li>test2</li>
+              <li>test3</li>
+              <li>test4</li>
+            </ul>
+            <h2>Title</h2>
+            <ul>
+              <li>test1</li>
+              <li>test2</li>
+              <li>test3</li>
+              <li>test4</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   );
