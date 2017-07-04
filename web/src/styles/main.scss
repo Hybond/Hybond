@@ -10,10 +10,13 @@ $grayColor: #f5f5f6; // Gray
 html, body {
   min-height: 100%;
   background: $grayColor;
-  font-family: 'Source Sans Pro', 'Helvetica Neue', 'Segoe UI', 'Microsoft Yahei', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 * {
   box-sizing: border-box;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", Oxygen, Ubuntu, Cantarell, "Open Sans", sans-serif;
 }
 
 // mixin
@@ -84,7 +87,7 @@ html, body {
   header.g {
     background: $primaryColor;
     color: #fff;
-    height: 300px;
+    padding-bottom: 235px;
     .logo {
       width: 105px;
       height: 30px;
@@ -115,6 +118,33 @@ html, body {
       .user-info {
         display: inline-block;
         line-height: 30px;
+      }
+    }
+    .banner {
+      text-align: center;
+      h1 {
+        font-size: 4em;
+        font-weight: normal;
+        font-style: italic;
+        @media screen and (max-width: 425px) {
+          font-size: 3.5em;
+        }
+        br {
+          display: none;
+          @media screen and (max-width: 425px) {
+            display: block;
+          }
+        }
+      }
+      .description {
+        font-size: 130%;
+        font-weight: 300;
+        br {
+          display: none;
+          @media screen and (min-width: 768px) and (max-width: 992px) {
+            display: block;
+          }
+        }
       }
     }
   }

@@ -10,6 +10,7 @@ import config from '../config.js';
 // TODO: Delete and rewrite the config after development.
 let devConfig = {
   flowChart: true,
+  isBanner: true,
 }
 
 // The site's url
@@ -19,7 +20,7 @@ class Base extends React.Component {
   render () {
     return (
       <div>
-        <Header />
+        <Header isBanner={devConfig.isBanner} />
         <MainPart />
         <Footer />
       </div>
@@ -27,14 +28,24 @@ class Base extends React.Component {
   }
 }
 
-function Header() {
+function Header(props) {
+  let bannerClass = props.isBanner ? ' banner' : '', bannerSection;
+  if (props.isBanner) {
+    bannerSection = (
+      <div className='banner'>
+        <h1>技术选型<br />新方式</h1>
+        <p className='description'>用流程图和简单的选型向导进行前端技术选型，<br />并将选型结果分享给更多开发者。</p>
+      </div>
+    );
+  }
   return (
-    <header className='g'>
-      <div className="container">
+    <header className={'g' + bannerClass}>
+      <div className='container'>
         <div className='top-row'>
           <a href={site_url}><div className='logo'></div></a>
           <HeaderUser></HeaderUser>
         </div>
+        {bannerSection}
       </div>
     </header>
   );
