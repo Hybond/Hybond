@@ -98,7 +98,7 @@ class Guide extends React.Component {
     return (
       <div className='guide' ref={guide => this.guide = guide}>
         <GuideControl className={this.state.fixedClass} flows={this.state.controlFlow} />
-        <div className='guide-sections'>
+        <div className='guide-sections container'>
           {this.state.mainContent}
         </div>
       </div>
@@ -120,12 +120,16 @@ function GuideControl(props) {
   return (
     <header className={'guide-control' + props.className}>
       <div className='guide-search'>
-        <label><i className='material-icons'>search</i></label>
-        <input type='text' placeholder='搜索'></input>
+        <div className='container'>
+          <label><i className='material-icons'>search</i></label>
+          <input type='text' placeholder='搜索'></input>
+        </div>
       </div>
       <div className='guide-filter'>
-        <button>热门</button>
-        {filterFlow}
+        <div className='container'>
+          <button>热门</button>
+          {filterFlow}
+        </div>
       </div>
     </header>
   );

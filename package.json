@@ -43,6 +43,7 @@
   "dependencies": {
     "express": "^4.15.3",
     "markdown": "^0.5.0",
+    "material-ui": "^1.0.0-alpha.21",
     "react": "^15.6.1",
     "react-clipboard.js": "^1.1.2",
     "react-dom": "^15.6.1",

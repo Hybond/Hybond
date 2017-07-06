@@ -2,6 +2,16 @@ import React from 'react';
 import Introduction from './introduction.jsx';
 import Manage from './manage.jsx';
 import Guide from './guide.jsx';
+
+// Material Designs
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { withStyles, createStyleSheet, createMuiTheme } from 'material-ui/styles';
+import createPalette from 'material-ui/styles/palette';
+import Icon from 'material-ui/Icon';
+import IconButton from 'material-ui/IconButton';
+import Menu, { MenuItem } from 'material-ui/Menu';
+import Avatar from 'material-ui/Avatar';
+
 import '../js/swiper.js';
 
 import config from '../config.js';
@@ -10,111 +20,234 @@ import config from '../config.js';
 // TODO: Delete and rewrite the config after development.
 let devConfig = {
   flowChart: true,
-  isBanner: true,
+  isBanner: false,
 }
 
 // The site's url
 const site_url = config.site_url;
 
 class Base extends React.Component {
+  constructor () {
+    super();
+    this.toManage = this.toManage.bind(this);
+    this.toGuide = this.toGuide.bind(this);
+    this.state = {
+      isFlowChart: devConfig.flowChart,
+      pageType: 'Guide', // The type of the page. Value = Introduction || Manage || Guide
+    };
+  }
+
+  toManage () {
+    this.setState({
+      isFlowChart: false,
+      pageType: 'Manage',
+    });
+  }
+
+  toGuide () {
+    this.setState({
+      isFlowChart: true,
+      pageType: 'Guide',
+    });
+  }
+
   render () {
     return (
       <div>
-        <Header isBanner={devConfig.isBanner} />
-        <MainPart />
+        <Header isBanner={devConfig.isBanner} toManage={this.toManage} toGuide={this.toGuide} />
+        <MainPart isFlowChart={this.state.isFlowChart} pageType={this.state.pageType} />
         <Footer />
       </div>
     );
   }
 }
 
-function Header(props) {
-  let bannerClass = props.isBanner ? ' banner' : '', bannerSection;
-  if (props.isBanner) {
-    bannerSection = (
-      <div className='banner'>
-        <h1>技术选型<br />新方式</h1>
-        <p className='description'>用流程图和简单的选型向导进行前端技术选型，<br />并将选型结果分享给更多开发者。</p>
-      </div>
-    );
+class Header extends React.Component {
+  constructor (props) {
+    super(props);
   }
-  return (
-    <header className={'g' + bannerClass}>
-      <div className='container'>
+
+  render () {
+    let bannerClass = this.props.isBanner ? ' banner' : '', bannerSection;
+    if (this.props.isBanner) {
+      bannerSection = (
+        <div className='banner'>
+          <h1>技术选型<br />新方式</h1>
+          <p className='description'>用流程图和简单的选型向导进行前端技术选型，<br />并将选型结果分享给更多开发者。</p>
+        </div>
+      );
+    }
+    return (
+      <header className={'g' + bannerClass}>
         <div className='top-row'>
           <a href={site_url}><div className='logo'></div></a>
-          <HeaderUser></HeaderUser>
+          <HeaderUser toGuide={this.props.toGuide} toManage={this.props.toManage}></HeaderUser>
         </div>
-        {bannerSection}
-      </div>
-    </header>
-  );
+      </header>
+    );
+  }
 }
 
 class HeaderUser extends React.Component {
-  constructor () {
-    super();
+  constructor (props) {
+    super(props);
+
+    this.handleClick = this.handleClick.bind(this);
+    this.handleRequestClose = this.handleRequestClose.bind(this);
+    this.toManage = this.toManage.bind(this);
+
     this.state = {
       logState: false,
       avatar: null,
-      nickname: null
-    }
+      nickname: null,
+      theme: createMuiTheme({
+        palette: createPalette({
+          type: 'dark',
+        }),
+      }),
+      open: false,
+      anchorEl: undefined,
+    };
+  }
+
+  handleClick (event) {
+    this.setState({ open: true, anchorEl: event.currentTarget });
+  }
+
+  handleRequestClose () {
+    this.setState({
+      open: false,
+    });
+  }
+
+  toManage () {
+    this.setState({
+      open: false,
+    });
+    this.props.toManage();
   }
 
   render () {
     return (
       <div className='float-right'>
-        <a className='top-add' href='javascript: alert("todo!")'>+</a>
-        <div className='user-info' onClick={() => this.setState({logState: !this.state.logState})}>{
-          this.state.logState ? '已登录' : '未登录'
-        }</div>
+        <MuiThemeProvider theme={this.state.theme}>
+          <div>
+            <IconButton className='top-add' aria-label='新建项目' onClick={this.props.toGuide}>
+              <Icon>add</Icon>
+            </IconButton>
+            <Avatar aria-owns='header-menu' aria-haspopup='true' aria-label='更多' onClick={this.handleClick} className='avatar'>H</Avatar>
+            {/*<IconButton aria-owns='header-menu' aria-haspopup='true' aria-label='更多' onClick={this.handleClick}>
+              <Icon>more_vert</Icon>
+            </IconButton>*/}
+            <MuiThemeProvider>
+              <Menu
+                id='header-menu'
+                anchorEl={this.state.anchorEl}
+                open={this.state.open}
+                onRequestClose={this.handleRequestClose}
+              >
+                <MenuItem onClick={this.toManage}>项目管理</MenuItem>
+                <MenuItem onClick={this.handleRequestClose}>退出登录</MenuItem>
+              </Menu>
+            </MuiThemeProvider>
+          </div>
+        </MuiThemeProvider>
       </div>
     );
   }
 }
 
-class MainPart extends React.Component {
-  constructor () {
-    super();
-    this.state = {
-      title: '技术选型向导', // TODO: change this.
-      description: null, // Description of the project or the page
-      titleLink: null, // Link of the project or the page
-      isFlowChart: devConfig.flowChart,
-      pageType: 'Guide', // The type of the page. Value = Introduction | Manage | Guide
-    };
-  }
 
-  render () {
-    let mainContent;
-    switch (this.state.pageType) {
+class MainPart extends React.Component {
+  constructor (props) {
+    super(props);
+
+    let title, description = null, titleLink = null;
+    switch (props.pageType) {
       case 'Introduction':
-        mainContent = (
-          <Introduction />
-        );
+        title = '项目名称';
+        description = '项目介绍';
+        titleLink = 'http://www.example.com/example/';
         break;
       case 'Manage':
-        mainContent = (
-          <Manage />
-        );
+        title = '项目管理';
         break;
       case 'Guide':
-        mainContent = (
-          <Guide />
-        );
+        title = '技术选型向导';
         break;
       default:
         mainContent = (<h1 className='container'>Error, wrong pageType.</h1>);
     }
 
+    this.state = {
+      title: title,
+      description: description, // Description of the project or the page
+      titleLink: titleLink, // Link of the project or the page
+      isFlowChart: props.isFlowChart,
+      mainContent: this.changeType(props.pageType),
+    };
+
+    this.changeType = this.changeType.bind(this);
+  }
+
+  componentWillReceiveProps (nextProps) {
+    this.setState({
+      isFlowChart: nextProps.isFlowChart,
+      mainContent: this.changeType(nextProps.pageType),
+    });
+  }
+
+  changeType (pageType) {
+    let mainContent;
+
+    switch (pageType) {
+      case 'Introduction':
+        mainContent = (
+          <Introduction />
+        );
+        this.setState({
+          title: '项目名称',
+          description: '项目介绍',
+          titleLink: 'http://www.example.com/example/',
+        });
+        break;
+      case 'Manage':
+        mainContent = (
+          <Manage />
+        );
+        this.setState({
+          title: '项目管理',
+          description: null,
+          titleLink: null,
+        });
+        break;
+      case 'Guide':
+        mainContent = (
+          <Guide />
+        );
+        this.setState({
+          title: '技术选型向导',
+          description: null,
+          titleLink: null,
+        });
+        break;
+      default:
+        mainContent = (<h1 className='container'>Error, wrong pageType.</h1>);
+    }
+
+    return mainContent;
+  }
+
+  render () {
+
     return (
-      <main className='container c-wp'>
+      <main className='c-wp'>
         <div className="container">
           <h1 className='big'>{this.state.title}</h1>
           <p className="proj-description">{this.state.description}<br /><a target='_blank' href={this.state.titleLink}>{this.state.titleLink}</a></p>
         </div>
         {this.state.isFlowChart ? <FlowChart /> : null}
-        {mainContent}
+        {this.state.mainContent}
       </main>
     );
   }
