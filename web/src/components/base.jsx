@@ -3,7 +3,7 @@ import Introduction from './introduction.jsx';
 import Manage from './manage.jsx';
 import Guide from './guide.jsx';
 
-// Material Designs
+// Material UI
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { withStyles, createStyleSheet, createMuiTheme } from 'material-ui/styles';
 import createPalette from 'material-ui/styles/palette';
@@ -19,8 +19,9 @@ import config from '../config.js';
 // Just for development
 // TODO: Delete and rewrite the config after development.
 let devConfig = {
-  flowChart: true,
+  flowChart: false,
   isBanner: false,
+  defaultType: 'Manage',
 }
 
 // The site's url
@@ -33,7 +34,7 @@ class Base extends React.Component {
     this.toGuide = this.toGuide.bind(this);
     this.state = {
       isFlowChart: devConfig.flowChart,
-      pageType: 'Guide', // The type of the page. Value = Introduction || Manage || Guide
+      pageType: devConfig.defaultType, // The type of the page. Value = Introduction || Manage || Guide
     };
   }
 

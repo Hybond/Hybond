@@ -1,18 +1,54 @@
 import React from 'react';
 
+// Material UI
+import Button from 'material-ui/Button';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Dialog, {
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from 'material-ui/Dialog';
+import Icon from 'material-ui/Icon';
+import IconButton from 'material-ui/IconButton';
+import TextField from 'material-ui/TextField';
+
 import config from '../config.js';
 
 const site_url = config.site_url;
 
 class Manage extends React.Component {
+  constructor () {
+    super();
+
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handleRequestClose = this.handleRequestClose.bind(this);
+
+    this.state = {
+      open: false,
+    };
+  }
+
+  handleDelete () {
+    this.setState({
+      open: true,
+    });
+  }
+
+  handleRequestClose () {
+    this.setState({
+      open: false,
+    });
+  }
+
   render () {
     return (
       <div className='container manage'>
         <ul className='manage-list'>
-          <Project />
-          <Project />
-          <Project />
-          <Project />
+          <Project handleDelete={this.handleDelete} />
+          <Project handleDelete={this.handleDelete} />
+          <Project handleDelete={this.handleDelete} />
+          <Project handleDelete={this.handleDelete} />
         </ul>
         <p className='manage-page'>
           <div>
@@ -21,6 +57,7 @@ class Manage extends React.Component {
             <button className='manage-page-btn'><i className='material-icons'>arrow_forward</i></button>
           </div>
         </p>
+        <ManageAlert open={this.state.open} handleRequestClose={this.handleRequestClose} />
       </div>
     );
   }
@@ -29,14 +66,6 @@ class Manage extends React.Component {
 class Project extends React.Component {
   constructor () {
     super();
-    this.toggleAlert = this.toggleAlert.bind(this);
-    this.state = {
-      isAlert: false,
-    };
-  }
-
-  toggleAlert () {
-    this.setState({isAlert: !this.state.isAlert});
   }
 
   render () {
@@ -46,12 +75,17 @@ class Project extends React.Component {
           <a className='proj-name' href={site_url + '/codemoe/hybond/'}>Hybond</a>
           <span className='description'>A Magical Bond for Hybrid Developer</span>
         </div>
-        <div className='manage-list-right'>
-          <button className='manage-list-edit'><i className='material-icons'>edit</i></button>
-          <button className='manage-list-delete' onClick={this.toggleAlert}><i className='material-icons'>delete</i></button>
-        </div>
+        <MuiThemeProvider>
+          <div className='manage-list-right'>
+            <IconButton aria-label='编辑项目'>
+              <Icon>edit</Icon>
+            </IconButton>
+            <IconButton aria-label='删除项目' onClick={this.props.handleDelete}>
+              <Icon>delete</Icon>
+            </IconButton>
+          </div>
+        </MuiThemeProvider>
         <div className='clearfix'></div>
-        <ManageAlert isAlert={this.state.isAlert} toggleAlert={this.toggleAlert} />
       </li>
     );
   }
@@ -60,38 +94,79 @@ class Project extends React.Component {
 class ManageAlert extends React.Component {
   constructor () {
     super();
+
+    this.handleRequestClose = this.handleRequestClose.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+
     this.state = {
-      value: '',
-      className: '',
+      deleteText: '',
+      deletable: false,
+      confirmButton: null,
+      projName: 'Hybond',
     };
   }
 
+  handleRequestClose () {
+    this.setState({ deleteText: '', deletable: false });
+    this.props.handleRequestClose();
+  }
+
+  handleDelete () {
+    this.handleRequestClose();
+  }
+
   handleChange (event) {
-    this.setState({value: event.target.value});
-    if (event.target.value != '') {
-      this.setState({className: 'have-content'});
+    let text = event.target.value;
+
+    this.setState({ deleteText: text });
+
+    let deletable;
+    if (text == this.state.projName) {
+      deletable = true;
     } else {
-      this.setState({className: ''});
+      deletable = false;
     }
+
+    this.setState({ deletable: deletable });
   }
 
   render () {
-    let tagClass = this.props.isAlert ? ' show' : '';
     return (
-      <div className={'manage-alert' + tagClass}>
-        <header>
-          <h3><i className='material-icons'>warning</i> 危险操作</h3>
-          <p className='description'>
-            您确定要删除项目 <span className='proj-name'>Hybond</span> 吗？这一操作不可逆，请谨慎操作。<br />
-            如果您确定要这么做，请输入项目名称（<span className='proj-name'>Hybond</span>）：
-          </p>
-          <button onClick={this.props.toggleAlert}><i className='material-icons'>close</i></button>
-        </header>
-        <div className='manage-alert-input'><input type='text' className={this.state.className} onChange={this.handleChange} value={this.state.value} /><span className='manage-alert-alt'>项目名称</span></div><br />
-        <button onClick={this.props.toggleAlert}>取消</button><button className='manage-alert-delete'>永久删除</button>
-        <div className='clearfix'></div>
-      </div>
+      <MuiThemeProvider>
+        <Dialog open={this.props.open} onRequestClose={this.handleRequestClose}>
+          <DialogTitle>
+            {"危险操作 - 删除项目"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              您确定要删除项目 <b>{this.state.projName}</b> 吗？这一操作不可逆，请谨慎操作。<br />
+              如果您确定要这么做，请输入项目名称（{this.state.projName}）
+            </DialogContentText>
+            <TextField
+              label='项目名称'
+              value={this.state.deleteText}
+              onChange={this.handleChange}
+              marginForm
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={this.handleRequestClose}
+              color="primary"
+            >
+              取消
+            </Button>
+            <Button
+              onClick={this.handleDelete}
+              color="accent"
+              disabled={!this.state.deletable}
+            >
+              删除
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </MuiThemeProvider>
     );
   }
 }
