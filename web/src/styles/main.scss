@@ -617,48 +617,23 @@ $chartColor: #232c38;
     }
   }
   .manage-page {
-    text-align: center;
-    list-style: none;
-    background: $primaryColor;
-    padding: 1em 1.5em;
-    color: #fff;
-    font-size: 21px;
-    border-radius: 2px;
-    box-shadow: 0 3px 2px rgba(#000, .1);
-    > div {
-      display: -webkit-inline-flex;
-      display: -ms-inline-flex;
-      display: inline-flex;
-      align-items: center;
-    }
-    @media screen and (max-width: 768px) {
-      margin: 0;
-      border: none;
-      border-radius: 0;
-      box-shadow: none;
-    }
-    .manage-page-num {
-      i {
-        opacity: .5;
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+    justify-content: center;
+    .stepper {
+      box-shadow: 0 3px 2px rgba(#000, .1);
+      @media screen and (max-width: 768px) {
+        width: 100%;
+        border-top: 1px solid #ddd;
       }
     }
-    .manage-page-btn {
-      border: none;
-      background: none;
-      padding: 0;
-      line-height: 1;
-      padding: 0 .5em;
-      opacity: .5;
-      transition: all .3s;
-      outline: none;
-      &:hover {
-        opacity: 1;
-      }
+    button {
       &:first-child {
-        margin-right: .5em;
+        margin-right: 10px;
       }
       &:last-child {
-        margin-left: .5em;
+        margin-left: 10px;
       }
     }
   }
@@ -724,24 +699,7 @@ $chartColor: #232c38;
       border-bottom: 1px solid #ececec;
       background: #fff;
       button {
-        display: inline-block;
-        padding: 0 8px;
-        height: 32px;
-        margin: 11px 8px;
-        transition: all .3s;
-        background: none;
-        border: none;
-        border-radius: 2px;
-        outline: none;
-        &.active {
-          color: $primaryColor;
-        }
-        &:hover {
-          background: rgba($primaryColorLight, .1);
-        }
-        &:active {
-          background: rgba($primaryColorLight, .3);
-        }
+        height: 54px;
       }
     }
   }

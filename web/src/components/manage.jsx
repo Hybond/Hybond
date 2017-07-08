@@ -12,6 +12,7 @@ import Dialog, {
 import Icon from 'material-ui/Icon';
 import IconButton from 'material-ui/IconButton';
 import TextField from 'material-ui/TextField';
+import MobileStepper from 'material-ui/MobileStepper';
 
 import config from '../config.js';
 
@@ -23,9 +24,12 @@ class Manage extends React.Component {
 
     this.handleDelete = this.handleDelete.bind(this);
     this.handleRequestClose = this.handleRequestClose.bind(this);
+    this.handleNext = this.handleNext.bind(this);
+    this.handleBack = this.handleBack.bind(this);
 
     this.state = {
       open: false,
+      activePage: 0,
     };
   }
 
@@ -41,22 +45,46 @@ class Manage extends React.Component {
     });
   }
 
+  handleNext () {
+    this.setState({
+      activePage: this.state.activePage + 1,
+    });
+  };
+
+  handleBack () {
+    this.setState({
+      activePage: this.state.activePage - 1,
+    });
+  };
+
   render () {
+    let projList = [];
+    for (let i = 0; i < 12; i++) {
+      projList.push(<Project handleDelete={this.handleDelete} />);
+    }
+
     return (
       <div className='container manage'>
         <ul className='manage-list'>
-          <Project handleDelete={this.handleDelete} />
-          <Project handleDelete={this.handleDelete} />
-          <Project handleDelete={this.handleDelete} />
-          <Project handleDelete={this.handleDelete} />
+          {projList}
         </ul>
-        <p className='manage-page'>
-          <div>
-            <button className='manage-page-btn'><i className='material-icons'>arrow_back</i></button>
-            <span className='manage-page-num'>1 <i>/</i> 5</span>
-            <button className='manage-page-btn'><i className='material-icons'>arrow_forward</i></button>
-          </div>
-        </p>
+        <div className='manage-page'>
+          <MuiThemeProvider>
+            <MobileStepper
+              type="dots"
+              steps={6}
+              position="static"
+              activeStep={this.state.activePage}
+              className='stepper'
+              onBack={this.handleBack}
+              onNext={this.handleNext}
+              disableBack={this.state.activePage === 0}
+              disableNext={this.state.activePage === 5}
+              backButtonText='上一页'
+              nextButtonText='下一页'
+            />
+          </MuiThemeProvider>
+        </div>
         <ManageAlert open={this.state.open} handleRequestClose={this.handleRequestClose} />
       </div>
     );

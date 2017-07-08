@@ -19,9 +19,9 @@ import config from '../config.js';
 // Just for development
 // TODO: Delete and rewrite the config after development.
 let devConfig = {
-  flowChart: false,
+  flowChart: true,
   isBanner: false,
-  defaultType: 'Manage',
+  defaultType: 'Guide',
 }
 
 // The site's url

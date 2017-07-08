@@ -1,5 +1,9 @@
 import React from 'react';
 
+// Material UI
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Tabs, { Tab } from 'material-ui/Tabs';
+
 // Just for development
 // TODO: Delete and rewrite the config after development.
 import devConfig from '../dev_data/guide.js'
@@ -106,33 +110,65 @@ class Guide extends React.Component {
   }
 }
 
-function GuideControl(props) {
-  // Get Flow
-  const flows = props.flows;
-  let filterFlow = [];
+class GuideControl extends React.Component {
+  constructor (props) {
+    super(props);
 
-  for (let i in flows.id) {
-    filterFlow.push(
-      <button>{flows.name[i]}</button>
-    );
+    this.handleChange = this.handleChange.bind(this);
+
+    // Get Flow
+    this.state = {
+      index: 0,
+      filterFlow: [],
+    };
   }
 
-  return (
-    <header className={'guide-control' + props.className}>
-      <div className='guide-search'>
-        <div className='container'>
-          <label><i className='material-icons'>search</i></label>
-          <input type='text' placeholder='搜索'></input>
+  handleChange (event, index) {
+    this.setState({ index });
+  }
+
+  componentWillReceiveProps (nextProps) {
+    const flows = nextProps.flows;
+    let filterFlow = [];
+
+    for (let i in flows.id) {
+      filterFlow.push(
+        <Tab label={flows.name[i]} />
+      );
+    }
+
+    this.setState({ filterFlow: filterFlow });
+  }
+
+  render () {
+    return (
+      <header className={'guide-control' + this.props.className}>
+        <div className='guide-search'>
+          <div className='container'>
+            <label><i className='material-icons'>search</i></label>
+            <input type='text' placeholder='搜索'></input>
+          </div>
         </div>
-      </div>
-      <div className='guide-filter'>
-        <div className='container'>
-          <button>热门</button>
-          {filterFlow}
+        <div className='guide-filter'>
+          <MuiThemeProvider>
+            <div className='container'>
+              <Tabs
+               index={this.state.index}
+               onChange={this.handleChange}
+               indicatorColor='primary'
+               textColor='primary'
+               scrollable
+               scrollButtons='auto'
+             >
+               <Tab label='热门' />
+               {this.state.filterFlow}
+             </Tabs>
+            </div>
+          </MuiThemeProvider>
         </div>
-      </div>
-    </header>
-  );
+      </header>
+    );
+  }
 }
 
 class GuideSection extends React.Component {
