@@ -1,8 +1,13 @@
 import React from 'react';
 
+import Introduction from './introduction.jsx';
+
 // Material UI
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Tabs, { Tab } from 'material-ui/Tabs';
+import Icon from 'material-ui/Icon';
+import Button from 'material-ui/Button';
+import { LabelCheckbox } from 'material-ui/Checkbox';
 
 // Just for development
 // TODO: Delete and rewrite the config after development.
@@ -14,6 +19,7 @@ class Guide extends React.Component {
     this.componentDidMount = this.componentDidMount.bind(this);
     this.handleWindowScroll = this.handleWindowScroll.bind(this);
     this.fixHeader = this.fixHeader.bind(this);
+    this.handleClose = this.handleClose.bind(this);
     this.state = {
       controlFlow: {id: [], name: []},
       guideTop: 0,
@@ -21,6 +27,7 @@ class Guide extends React.Component {
       fixTime: 0,
       timeout: 0,
       mainContent: [],
+      link: false,
     };
   }
 
@@ -45,6 +52,7 @@ class Guide extends React.Component {
       guideTop: getTop(this.guide), // Fixed header
       fixTime: new Date(),
       mainContent: mainContent, // Output main content
+      link: false,
     });
 
     // Main content
@@ -58,9 +66,10 @@ class Guide extends React.Component {
     window.addEventListener('scroll', this.handleWindowScroll);
   }
 
-  handleMore (t) {
-    // Test transfer data.
-    console.log(t);
+  handleMore (link) {
+    this.setState({
+      link: link,
+    });
   }
 
   componentWillUnmount() {
@@ -98,6 +107,12 @@ class Guide extends React.Component {
     }
   }
 
+  handleClose () {
+    this.setState({
+      link: false,
+    });
+  }
+
   render () {
     return (
       <div className='guide' ref={guide => this.guide = guide}>
@@ -105,6 +120,9 @@ class Guide extends React.Component {
         <div className='guide-sections container'>
           {this.state.mainContent}
         </div>
+        <BottomBar
+          link={this.state.link}
+          handleClose={this.handleClose}/>
       </div>
     );
   }
@@ -175,17 +193,8 @@ class GuideSection extends React.Component {
   constructor (props) {
     super();
 
-    // Initate checkList
-    let flow = props.flow, checkList = [];
-    for (let i in flow.hot) {
-      checkList.push(false);
-    }
-    let openList = checkList.slice();
-
     this.state = {
       flow: {},
-      checkList: checkList,
-      openList: openList,
     };
   }
 
@@ -195,26 +204,8 @@ class GuideSection extends React.Component {
     });
   }
 
-  handleCheck (i) {
-    let checkList = this.state.checkList.slice();
-    checkList[i] = !checkList[i];
-    this.setState({
-      checkList: checkList,
-    });
-  }
-
-  handleMore (i, link) {
-    let openList = this.state.openList.slice();
-    for (let j in openList) {
-      if(j != i)
-        openList[j] = false;
-    }
-    openList[i] = !openList[i];
-    this.setState({
-      openList: openList,
-    });
-    if(openList[i])
-      this.props.handleMore(link);
+  handleMore (link) {
+    this.props.handleMore(link);
   }
 
   render () {
@@ -231,10 +222,7 @@ class GuideSection extends React.Component {
           name={flow.hot[i].name}
           description={flow.hot[i].description}
           link={flow.hot[i].link}
-          handleCheck={() => this.handleCheck(i)}
-          checked={this.state.checkList[i]}
-          handleMore={() => this.handleMore(i, 'test')}
-          open={this.state.openList[i]} />
+          handleMore={link => this.handleMore(link)} />
       );
     }
 
@@ -271,39 +259,75 @@ function GuideCard(props) {
         <div className='tag' style={{backgroundColor: props.color}}><div className='tag-dot' style={{backgroundColor: props.color}}></div>{props.name}</div>
         <p className='description'>{props.description}</p>
         <footer>
-          <button className='more' onClick={props.handleMore}>了解更多</button>
-          <button className={'check' + checkClass} onClick={props.handleCheck}><i className='material-icons'>{icon}</i></button>
+          <Button className='more' onClick={() => props.handleMore(link)}>了解更多</Button>
+          <LabelCheckbox
+            className='check'
+            onChange={props.handleCheck}
+          />
         </footer>
-      </div>
-      <div className='guide-under'>
-        <div>
-          <div className='content'>
-            <h2>Title</h2>
-            <ul>
-              <li>test1</li>
-              <li>test2</li>
-              <li>test3</li>
-              <li>test4</li>
-            </ul>
-            <h2>Title</h2>
-            <ul>
-              <li>test1</li>
-              <li>test2</li>
-              <li>test3</li>
-              <li>test4</li>
-            </ul>
-            <h2>Title</h2>
-            <ul>
-              <li>test1</li>
-              <li>test2</li>
-              <li>test3</li>
-              <li>test4</li>
-            </ul>
-          </div>
-        </div>
       </div>
     </div>
   );
+}
+
+class BottomBar extends React.Component {
+  constructor () {
+    super();
+
+    this.handleClose = this.handleClose.bind(this);
+
+    this.state = {
+      folded: true,
+      link: '',
+      className: '',
+      introduction: null,
+    };
+  }
+
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.link) {
+      this.setState({
+        folded: false,
+        className: 'unfolded',
+        introduction: (<Introduction />),
+      });
+      document.getElementsByTagName('body')[0].style.overflow = 'hidden';
+    }
+  }
+
+  handleClose () {
+    this.setState({
+      folded: true,
+      link: '',
+      className: '',
+      introduction: null,
+    });
+    document.getElementsByTagName('body')[0].style.overflow = '';
+    this.props.handleClose();
+  }
+
+  render () {
+    return (
+      <div id='bottom-bar' className={this.state.className}>
+        {
+          this.state.folded ?
+          (
+            <div className='top container'>
+              <p className='header'>点击“了解更多”预览技术概况</p>
+              <Button raised color='primary'>选好了</Button>
+            </div>
+          ) :
+          (
+            <div className='top container'>
+              <p className='header'>正在预览技术概况</p>
+              <Button raised color='primary' onClick={this.handleClose}>返回</Button>
+            </div>
+          )
+        }
+        {this.state.introduction}
+      </div>
+    );
+  }
 }
 
 export default Guide;

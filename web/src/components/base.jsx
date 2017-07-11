@@ -30,11 +30,13 @@ const site_url = config.site_url;
 class Base extends React.Component {
   constructor () {
     super();
+    this.toIndex = this.toIndex.bind(this);
     this.toManage = this.toManage.bind(this);
     this.toGuide = this.toGuide.bind(this);
     this.state = {
       isFlowChart: devConfig.flowChart,
       pageType: devConfig.defaultType, // The type of the page. Value = Introduction || Manage || Guide
+      isBanner: devConfig.isBanner,
     };
   }
 
@@ -42,23 +44,38 @@ class Base extends React.Component {
     this.setState({
       isFlowChart: false,
       pageType: 'Manage',
+      isBanner: false,
     });
+    history.pushState(null,'','?manage');
   }
 
   toGuide () {
     this.setState({
       isFlowChart: true,
       pageType: 'Guide',
+      isBanner: false,
     });
+    history.pushState(null,'','?guide');
+  }
+
+  toIndex () {
+    this.setState({
+      isFlowChart: true,
+      pageType: 'Guide',
+      isBanner: true,
+    });
+    history.pushState(null,'','?index');
   }
 
   render () {
     return (
-      <div>
-        <Header isBanner={devConfig.isBanner} toManage={this.toManage} toGuide={this.toGuide} />
-        <MainPart isFlowChart={this.state.isFlowChart} pageType={this.state.pageType} />
-        <Footer />
-      </div>
+      <MuiThemeProvider>
+        <div>
+          <Header isBanner={this.state.isBanner} toIndex={this.toIndex} toManage={this.toManage} toGuide={this.toGuide} />
+          <MainPart isFlowChart={this.state.isFlowChart} pageType={this.state.pageType} />
+          <Footer />
+        </div>
+      </MuiThemeProvider>
     );
   }
 }
@@ -66,6 +83,12 @@ class Base extends React.Component {
 class Header extends React.Component {
   constructor (props) {
     super(props);
+    this.toIndex = this.toIndex.bind(this);
+  }
+
+  toIndex (event) {
+    this.props.toIndex();
+    event.preventDefault();
   }
 
   render () {
@@ -81,9 +104,10 @@ class Header extends React.Component {
     return (
       <header className={'g' + bannerClass}>
         <div className='top-row'>
-          <a href={site_url}><div className='logo'></div></a>
+          <a href={site_url} onClick={event => this.toIndex(event)}><div className='logo'></div></a>
           <HeaderUser toGuide={this.props.toGuide} toManage={this.props.toManage}></HeaderUser>
         </div>
+        {bannerSection}
       </header>
     );
   }
@@ -101,11 +125,6 @@ class HeaderUser extends React.Component {
       logState: false,
       avatar: null,
       nickname: null,
-      theme: createMuiTheme({
-        palette: createPalette({
-          type: 'dark',
-        }),
-      }),
       open: false,
       anchorEl: undefined,
     };
@@ -131,16 +150,11 @@ class HeaderUser extends React.Component {
   render () {
     return (
       <div className='float-right'>
-        <MuiThemeProvider theme={this.state.theme}>
           <div>
-            <IconButton className='top-add' aria-label='新建项目' onClick={this.props.toGuide}>
+            <IconButton className='top-add' color='contrast' aria-label='新建项目' onClick={this.props.toGuide}>
               <Icon>add</Icon>
             </IconButton>
             <Avatar aria-owns='header-menu' aria-haspopup='true' aria-label='更多' onClick={this.handleClick} className='avatar'>H</Avatar>
-            {/*<IconButton aria-owns='header-menu' aria-haspopup='true' aria-label='更多' onClick={this.handleClick}>
-              <Icon>more_vert</Icon>
-            </IconButton>*/}
-            <MuiThemeProvider>
               <Menu
                 id='header-menu'
                 anchorEl={this.state.anchorEl}
@@ -150,9 +164,7 @@ class HeaderUser extends React.Component {
                 <MenuItem onClick={this.toManage}>项目管理</MenuItem>
                 <MenuItem onClick={this.handleRequestClose}>退出登录</MenuItem>
               </Menu>
-            </MuiThemeProvider>
           </div>
-        </MuiThemeProvider>
       </div>
     );
   }

@@ -103,7 +103,10 @@ h1, h2, h3, h4, h5, h6 {
     }
     .top-row {
       height: 60px;
-      padding: 0 45px;
+      padding: 0 15px;
+      @media screen and (min-width: 992px) {
+        padding: 0 45px;
+      }
       .top-add {
         height: 60px;
       }
@@ -827,76 +830,50 @@ $chartColor: #232c38;
               border: none;
               outline: none;
               &.more {
-                background: transparent;
                 height: 30px;
                 font-size: 90%;
-                padding: 0 10px;
-                transition: all .3s;
-                &:hover {
-                  background: rgba(#000, .1);
-                }
-              }
-              &.check {
-                background: none;
-                height: 30px;
-                line-height: 1;
-                float: right;
-                font-size: 21px;
-                padding: 0;
-                &.checked {
-                  color: $primaryColor;
-                }
+                min-height: 30px;
+                padding: 0 16px;
               }
             }
-          }
-        }
-        .guide-under {
-          z-index: 5;
-          position: absolute;
-          left: 0;
-          top: 0;
-          width: 100%;
-          height: 100%;
-          padding: 0 10px 20px;
-          > div {
-            border-radius: 2px;
-            height: 100%;
-            overflow: hidden;
-            box-shadow: inset 0 0 4px rgba(#000, .2);
-            background: #dedede;
-            position: relative;
-            .content {
-              height: 100%;
-              overflow: auto;
-              padding: 15px;
-              padding-top: 90px;
+            .check {
+              float: right;
+              margin-top: -9px;
             }
-            &::after {
-              content: '';
-              display: block;
-              position: absolute;
-              top: 0px;
-              left: 0;
-              width: 100%;
-              height: 18%;
-              background: transparent;
-              box-shadow: 0 0 80px rgba(#000, .7);
-              opacity: 0;
-              transition: opacity .4s;
-            }
-          }
-        }
-        &.open {
-          .guide-wrap {
-            z-index: 400;
-            transform: perspective(999px) rotateX(80deg);
-            box-shadow: 0 0 2px rgba(#000, .2);
-          }
-          .guide-under > div::after {
-            opacity: 1;
           }
         }
       }
+    }
+  }
+  #bottom-bar {
+    position: fixed;
+    top: 100%;
+    margin-top: -60px;
+    width: 100%;
+    height: 100%;
+    z-index: 600;
+    background: #fff;
+    box-shadow: 0 -4px 5px 0 rgba(0, 0, 0, 0.1), 0 -1px 10px 0 rgba(0, 0, 0, 0.08), 0 -2px 4px -1px rgba(0, 0, 0, 0.15);
+    transition: top .7s, margin-top .7s;
+    background: #fff;
+    .top.container {
+      display: -webkit-flex;
+      display: -ms-flex;
+      display: flex;
+      height: 60px;
+      align-items: center;
+    }
+    p.header {
+      flex: 1;
+    }
+    &.unfolded {
+      top: 0;
+      margin-top: 0;
+      overflow: auto;
+    }
+    .introduction {
+      margin-top: 30px;
+      margin-bottom: 30px;
     }
   }
 }
