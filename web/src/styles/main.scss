@@ -727,6 +727,54 @@ $chartColor: #232c38;
         padding-bottom: 30px;
       }
     }
+    .guide-form {
+      text-align: center;
+      .guide-stepper {
+        display: -webkit-flex;
+        display: -ms-flex;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        .guide-avatar {
+          margin-right: 10px;
+          background: $primaryColor;
+        }
+      }
+      .guide-btn {
+        width: 100%;
+        display: inline-block;
+        padding: 30px;
+        color: #fff;
+        background: #2b2b2b;
+        background-position: right bottom;
+        background-repeat: no-repeat;
+        background-size: 180px;
+        p {
+          margin: 0;
+          text-align: left;
+          line-height: 1.2;
+          font-weight: lighter;
+          &.big {
+            font-size: 300%;
+          }
+        }
+        &#guide-btn-ss {
+          margin-bottom: 10px;
+          background-image: url(../img/snapshot.svg);
+        }
+        &#guide-btn-np {
+          background-image: url(../img/normal_project.svg);
+        }
+        @media screen and (min-width: 768px) {
+          width: 300px;
+          &#guide-btn-ss {
+            margin-right: 20px;
+          }
+        }
+      }
+    }
     .guide-page {
       h3 {
         display: none;

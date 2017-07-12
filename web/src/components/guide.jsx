@@ -8,6 +8,8 @@ import Tabs, { Tab } from 'material-ui/Tabs';
 import Icon from 'material-ui/Icon';
 import Button from 'material-ui/Button';
 import { LabelCheckbox } from 'material-ui/Checkbox';
+import TextField from 'material-ui/TextField';
+import Avatar from 'material-ui/Avatar';
 
 // Just for development
 // TODO: Delete and rewrite the config after development.
@@ -16,10 +18,14 @@ import devConfig from '../dev_data/guide.js'
 class Guide extends React.Component {
   constructor () {
     super();
+
     this.componentDidMount = this.componentDidMount.bind(this);
     this.handleWindowScroll = this.handleWindowScroll.bind(this);
     this.fixHeader = this.fixHeader.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.handleNext = this.handleNext.bind(this);
+    this.handleBack = this.handleBack.bind(this);
+
     this.state = {
       controlFlow: {id: [], name: []},
       guideTop: 0,
@@ -28,6 +34,7 @@ class Guide extends React.Component {
       timeout: 0,
       mainContent: [],
       link: false,
+      form: false,
     };
   }
 
@@ -113,19 +120,85 @@ class Guide extends React.Component {
     });
   }
 
+  handleNext () {
+    this.setState({
+      form: true,
+    });
+  }
+
+  handleBack () {
+    this.setState({
+      form: false,
+    });
+  }
+
   render () {
     return (
       <div className='guide' ref={guide => this.guide = guide}>
-        <GuideControl className={this.state.fixedClass} flows={this.state.controlFlow} />
+        {
+          this.state.form ?
+          '' :
+          (
+            <GuideControl
+              className={this.state.fixedClass}
+              flows={this.state.controlFlow}
+              />
+          )
+        }
         <div className='guide-sections container'>
-          {this.state.mainContent}
+          {
+            !this.state.form ? this.state.mainContent :
+            (
+              <div className='guide-form'>
+                <GuideStepper
+                  count='1'
+                  text='选择项目类型'
+                />
+
+                <Button raised id='guide-btn-ss' className='guide-btn'>
+                  <p>匿名的</p>
+                  <p className='big'>
+                    快照
+                  </p>
+                </Button>
+                <Button raised id='guide-btn-np' className='guide-btn'>
+                  <p>可重复编辑的</p>
+                  <p className='big'>
+                    普通项目
+                  </p>
+                </Button>
+
+                <GuideStepper
+                  count='2'
+                  text='设置项目属性'
+                />
+                <TextField
+                  label='项目名称'
+                  type='text'
+                  helperText='显示在页面上的名称'
+                  marginForm
+                />
+              </div>
+            )
+          }
         </div>
         <BottomBar
           link={this.state.link}
-          handleClose={this.handleClose}/>
+          handleClose={this.handleClose}
+          handleNext={this.handleNext}
+          handleBack={this.handleBack}/>
       </div>
     );
   }
+}
+
+function GuideStepper(props) {
+  return (
+    <div className='guide-stepper'>
+      <Avatar className='guide-avatar'>{props.count}</Avatar>
+      <p>{props.text}</p>
+    </div>
+  );
 }
 
 class GuideControl extends React.Component {
@@ -275,12 +348,15 @@ class BottomBar extends React.Component {
     super();
 
     this.handleClose = this.handleClose.bind(this);
+    this.handleNext = this.handleNext.bind(this);
+    this.handleBack = this.handleBack.bind(this);
 
     this.state = {
       folded: true,
       link: '',
       className: '',
       introduction: null,
+      form: false,
     };
   }
 
@@ -306,24 +382,54 @@ class BottomBar extends React.Component {
     this.props.handleClose();
   }
 
+  handleNext () {
+    this.props.handleNext();
+    this.setState({
+      form: true,
+    });
+  }
+
+  handleBack () {
+    this.props.handleBack();
+    this.setState({
+      form: false,
+    });
+  }
+
   render () {
+    let top;
+    if (this.state.folded) {
+      top = (
+        <div className='top container'>
+          <p className='header'>点击“了解更多”预览技术概况</p>
+          <Button
+            raised
+            color='primary'
+            onClick={this.handleNext}
+            >
+            选好了
+          </Button>
+        </div>
+      );
+    } else {
+      top = (
+        <div className='top container'>
+          <p className='header'>正在预览技术概况</p>
+          <Button raised color='primary' onClick={this.handleClose}>返回</Button>
+        </div>
+      );
+    }
+    if (this.state.form) {
+      top = (
+        <div className='top container'>
+          <p className='header'>设置项目信息</p>
+          <Button raised color='primary' onClick={this.handleBack}>修改选型</Button>
+        </div>
+      );
+    }
     return (
       <div id='bottom-bar' className={this.state.className}>
-        {
-          this.state.folded ?
-          (
-            <div className='top container'>
-              <p className='header'>点击“了解更多”预览技术概况</p>
-              <Button raised color='primary'>选好了</Button>
-            </div>
-          ) :
-          (
-            <div className='top container'>
-              <p className='header'>正在预览技术概况</p>
-              <Button raised color='primary' onClick={this.handleClose}>返回</Button>
-            </div>
-          )
-        }
+        {top}
         {this.state.introduction}
       </div>
     );
