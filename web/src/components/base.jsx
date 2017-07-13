@@ -33,6 +33,7 @@ class Base extends React.Component {
     this.toIndex = this.toIndex.bind(this);
     this.toManage = this.toManage.bind(this);
     this.toGuide = this.toGuide.bind(this);
+    this.toIntroduction = this.toIntroduction.bind(this);
     this.state = {
       isFlowChart: devConfig.flowChart,
       pageType: devConfig.defaultType, // The type of the page. Value = Introduction || Manage || Guide
@@ -67,12 +68,21 @@ class Base extends React.Component {
     history.pushState(null,'','?index');
   }
 
+  toIntroduction () {
+    this.setState({
+      isFlowChart: true,
+      pageType: 'Introduction',
+      isBanner: false,
+    });
+    history.pushState(null,'','?introduction');
+  }
+
   render () {
     return (
       <MuiThemeProvider>
         <div>
           <Header isBanner={this.state.isBanner} toIndex={this.toIndex} toManage={this.toManage} toGuide={this.toGuide} />
-          <MainPart isFlowChart={this.state.isFlowChart} pageType={this.state.pageType} />
+          <MainPart isFlowChart={this.state.isFlowChart} pageType={this.state.pageType} toIntroduction={this.toIntroduction} />
           <Footer />
         </div>
       </MuiThemeProvider>
@@ -226,7 +236,7 @@ class MainPart extends React.Component {
         break;
       case 'Manage':
         mainContent = (
-          <Manage />
+          <Manage toIntroduction={this.props.toIntroduction} />
         );
         this.setState({
           title: '项目管理',

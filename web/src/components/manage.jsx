@@ -60,7 +60,7 @@ class Manage extends React.Component {
   render () {
     let projList = [];
     for (let i = 0; i < 12; i++) {
-      projList.push(<Project handleDelete={this.handleDelete} />);
+      projList.push(<Project toIntroduction={this.props.toIntroduction} handleDelete={this.handleDelete} />);
     }
 
     return (
@@ -96,11 +96,16 @@ class Project extends React.Component {
     super();
   }
 
+  toIntroduction (event) {
+    this.props.toIntroduction();
+    event.preventDefault();
+  }
+
   render () {
     return (
       <li>
         <div className='manage-list-left'>
-          <a className='proj-name' href={site_url + '/codemoe/hybond/'}>Hybond</a>
+          <a className='proj-name' href={site_url + '/codemoe/hybond/'} onClick={event => this.toIntroduction(event)}>Hybond</a>
           <span className='description'>A Magical Bond for Hybrid Developer</span>
         </div>
         <MuiThemeProvider>

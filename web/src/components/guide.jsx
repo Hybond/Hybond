@@ -11,6 +11,11 @@ import { LabelCheckbox } from 'material-ui/Checkbox';
 import TextField from 'material-ui/TextField';
 import Avatar from 'material-ui/Avatar';
 
+import config from '../config.js';
+
+// The site's url
+const site_url = config.site_url;
+
 // Just for development
 // TODO: Delete and rewrite the config after development.
 import devConfig from '../dev_data/guide.js'
@@ -147,39 +152,7 @@ class Guide extends React.Component {
         }
         <div className='guide-sections container'>
           {
-            !this.state.form ? this.state.mainContent :
-            (
-              <div className='guide-form'>
-                <GuideStepper
-                  count='1'
-                  text='选择项目类型'
-                />
-
-                <Button raised id='guide-btn-ss' className='guide-btn'>
-                  <p>匿名的</p>
-                  <p className='big'>
-                    快照
-                  </p>
-                </Button>
-                <Button raised id='guide-btn-np' className='guide-btn'>
-                  <p>可重复编辑的</p>
-                  <p className='big'>
-                    普通项目
-                  </p>
-                </Button>
-
-                <GuideStepper
-                  count='2'
-                  text='设置项目属性'
-                />
-                <TextField
-                  label='项目名称'
-                  type='text'
-                  helperText='显示在页面上的名称'
-                  marginForm
-                />
-              </div>
-            )
+            !this.state.form ? this.state.mainContent : (<GuideForm />)
           }
         </div>
         <BottomBar
@@ -187,6 +160,176 @@ class Guide extends React.Component {
           handleClose={this.handleClose}
           handleNext={this.handleNext}
           handleBack={this.handleBack}/>
+      </div>
+    );
+  }
+}
+
+class GuideForm extends React.Component {
+  constructor() {
+    super();
+
+    this.handleChange = this.handleChange.bind(this);
+
+    this.state = {
+      chooseClass: [false, false],
+      projName: '',
+      projUrl: '',
+      inputCheck: [false, false],
+      isEdited: false,
+      linkText: '',
+    };
+  }
+
+  handleChoose (n) {
+    let chooseClass = this.state.chooseClass.slice();
+    for (let i = 0; i < chooseClass.length; i++) {
+      if (i != n) {
+        chooseClass[i] = false;
+      } else {
+        chooseClass[i] = true;
+      }
+    }
+    this.setState({chooseClass: chooseClass});
+  }
+
+  checkProjName (text) {
+    let check = false, result;
+
+    if (text != '') {
+      check = true;
+    }
+
+    return [check, result];
+  }
+
+  checkProjUrl (url) {
+    let check = false, result;
+
+    if (url != '') {
+      check = true;
+    }
+
+    return [check, result];
+  }
+
+  handleChange (type, e) {
+    let
+      value = e.target.value,
+      checkArray = this.state.inputCheck.slice(),
+      url = this.state.projUrl,
+      checkName, checkUrl,
+      linkText = '，目前的链接为：' + site_url + '/userid/',
+      checkReg = /[^0-9|a-z|-]/g;
+
+    if(value.length > 30) {
+      value = value.slice(0, 30);
+    }
+
+    if (type == 'name') {
+      if(!this.state.isEdited) {
+        url = value.toLowerCase().replace(checkReg, '-');
+      }
+
+      this.setState({
+        projName: value,
+        projUrl: url,
+      });
+    } else if (type == 'url') {
+      url = value.toLowerCase().replace(checkReg, '-');
+      value = value.toLowerCase().replace(checkReg, '-');
+      this.setState({
+        projUrl: value,
+        isEdited: true,
+      });
+    }
+
+    if (!url) {
+      linkText = '';
+    } else {
+      linkText += url;
+    }
+    this.setState({linkText: linkText});
+
+    checkName = (type == 'name') ? value : this.state.projName;
+    checkUrl = (type == 'url') ? value : url;
+    checkArray[0] = this.checkProjName(checkName)[0];
+    checkArray[1] = this.checkProjUrl(checkUrl)[0];
+    this.setState({inputCheck: checkArray});
+  }
+
+  render () {
+    return (
+      <div className='guide-form'>
+        <h1>设置项目信息</h1>
+
+        <GuideStepper
+          count='1'
+          text='选择项目类型'
+        />
+
+        <Button
+          raised
+          id='guide-btn-ss'
+          className={this.state.chooseClass[0] ? 'guide-btn active' : 'guide-btn'}
+          onClick={() => this.handleChoose(0)}
+        >
+          <p>匿名的</p>
+          <p className='big'>
+            快照
+          </p>
+        </Button>
+        <Button
+          raised
+          id='guide-btn-np'
+          className={this.state.chooseClass[1] ? 'guide-btn active' : 'guide-btn'}
+          onClick={() => this.handleChoose(1)}
+        >
+          <p>可重复编辑的</p>
+          <p className='big'>
+            普通项目
+          </p>
+        </Button>
+
+        <div className={this.state.chooseClass[1] ? '' : 'hidden'}>
+          <GuideStepper
+            count='2'
+            text='设置项目属性'
+          />
+          <TextField
+            label='项目名称'
+            type='text'
+            helperText='显示在页面上的名称'
+            value={this.state.projName}
+            onChange={() => this.handleChange('name', event)}
+            className='guide-input'
+            marginForm
+          />
+          <TextField
+            label='项目链接'
+            type='text'
+            helperText={'全站唯一的 Url' + this.state.linkText}
+            value={this.state.projUrl}
+            onChange={() => this.handleChange('url', event)}
+            className='guide-input'
+            marginForm
+          />
+        </div>
+
+        <div className={(this.state.chooseClass[0] || this.state.chooseClass[1]) ? '' : 'hidden'}>
+          <GuideStepper
+            count={this.state.chooseClass[0] ? '2' : '3'}
+            text='发布项目'
+          />
+          <Button
+            raised
+            color='default'
+            id='guide-btn-c'
+            disabled={(this.state.chooseClass[0] || (this.state.inputCheck[0] && this.state.inputCheck[1])) ? false : true}
+          >
+            发布项目
+          </Button>
+        </div>
       </div>
     );
   }
