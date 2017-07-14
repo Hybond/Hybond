@@ -30,14 +30,24 @@ const site_url = config.site_url;
 class Base extends React.Component {
   constructor () {
     super();
+
     this.toIndex = this.toIndex.bind(this);
     this.toManage = this.toManage.bind(this);
     this.toGuide = this.toGuide.bind(this);
     this.toIntroduction = this.toIntroduction.bind(this);
+    this.handleCloseError = this.handleCloseError.bind(this);
+
+
+    // TODO: 删除测试功能
+    let bannerType = '';
+    if (location.search == '?error') {
+      bannerType = 'error';
+    }
+
     this.state = {
       isFlowChart: devConfig.flowChart,
       pageType: devConfig.defaultType, // The type of the page. Value = Introduction || Manage || Guide
-      isBanner: devConfig.isBanner,
+      bannerType: bannerType,
     };
   }
 
@@ -45,7 +55,7 @@ class Base extends React.Component {
     this.setState({
       isFlowChart: false,
       pageType: 'Manage',
-      isBanner: false,
+      bannerType: '',
     });
     history.pushState(null,'','?manage');
   }
@@ -54,7 +64,7 @@ class Base extends React.Component {
     this.setState({
       isFlowChart: true,
       pageType: 'Guide',
-      isBanner: false,
+      bannerType: '',
     });
     history.pushState(null,'','?guide');
   }
@@ -63,7 +73,7 @@ class Base extends React.Component {
     this.setState({
       isFlowChart: true,
       pageType: 'Guide',
-      isBanner: true,
+      bannerType: 'index',
     });
     history.pushState(null,'','?index');
   }
@@ -72,16 +82,28 @@ class Base extends React.Component {
     this.setState({
       isFlowChart: true,
       pageType: 'Introduction',
-      isBanner: false,
+      bannerType: '',
     });
     history.pushState(null,'','?introduction');
+  }
+
+  handleCloseError () {
+    this.setState({
+      bannerType: '',
+    });
   }
 
   render () {
     return (
       <MuiThemeProvider>
         <div>
-          <Header isBanner={this.state.isBanner} toIndex={this.toIndex} toManage={this.toManage} toGuide={this.toGuide} />
+          <Header
+            bannerType={this.state.bannerType}
+            toIndex={this.toIndex}
+            toManage={this.toManage}
+            toGuide={this.toGuide}
+            handleCloseError={this.handleCloseError}
+          />
           <MainPart isFlowChart={this.state.isFlowChart} pageType={this.state.pageType} toIntroduction={this.toIntroduction} />
           <Footer />
         </div>
@@ -102,12 +124,87 @@ class Header extends React.Component {
   }
 
   render () {
-    let bannerClass = this.props.isBanner ? ' banner' : '', bannerSection;
-    if (this.props.isBanner) {
+    let bannerClass = this.props.bannerType ? ' banner' : '', bannerSection;
+    if (this.props.bannerType == 'index') {
       bannerSection = (
         <div className='banner'>
           <h1>技术选型<br />新方式</h1>
           <p className='description'>用流程图和简单的选型向导进行前端技术选型，<br />并将选型结果分享给更多开发者。</p>
+        </div>
+      );
+    }
+    if (this.props.bannerType == 'error') {
+      bannerSection = (
+        <div className='error'>
+          <div className='error-top-bar'>
+            <div className='error-btns'>
+              <button className='error-close-btn' onClick={this.props.handleCloseError}></button>
+              <button className='error-fake-btn-y'></button>
+              <button className='error-fake-btn-g'></button>
+            </div>
+            <p>Bash</p>
+          </div>
+          <pre>
+            <code>
+              <pre className='error-ascii-art'>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.-~-.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.~&lt;~'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&lt;'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.(-...-~-''...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'-'.'(..-~((&lt;((&lt;(~~-.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..&nbsp;&nbsp;&nbsp;&nbsp;'(&lt;&lt;(~~-(&lt;+&lt;&lt;(((((&lt;++&lt;~.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.-~((.&nbsp;-(&lt;++&lt;((((&lt;===+&lt;(((((+==&lt;'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.~&lt;&lt;==&lt;~(&lt;&lt;&lt;&lt;&lt;(((&lt;&lt;&lt;&lt;&lt;&lt;+&lt;(((((&lt;+s+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'(&lt;+=s+((&lt;((((((((((((((&lt;(((((((+s&lt;.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.-&lt;+=s=&lt;((((((((((((((((((((((((((=s&lt;.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.~&lt;+s=+(((((((((((((((((((((((((((&lt;==~&nbsp;&nbsp;...&nbsp;&nbsp;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.~+==+(((((((((((((((((((((((((((((+s+-'~(~-'<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.~+=&lt;((&lt;&lt;((((&lt;(((((((((((((((((((((&lt;==&lt;(&lt;&lt;&lt;&lt;(<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'(~-~~~(((((((((((((((((((((((((((&lt;++&lt;((((&lt;&lt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.'-----~(((((&lt;&lt;((((((((((((((((((&lt;(&lt;&lt;&lt;(&lt;(((((<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'-~~(((((((((+&lt;(((((((((((((((((((((((((((&lt;&lt;(<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.'~((&lt;&lt;(((&lt;(((+&lt;(((((((((((((((((((((((((((((((<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'-((((((((&lt;(~&lt;&lt;((((((&lt;(((&lt;((((((((((&lt;((((((&lt;(((<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'--(&lt;((((&lt;&lt;(~~&lt;~~&lt;((((&lt;(((((((((((((~~((&lt;&lt;((((&lt;+<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.-'-(((((&lt;&lt;&lt;(~(&lt;'~&lt;((((&lt;&lt;(((((((&lt;&lt;(((~--~&lt;=&lt;&lt;&lt;++s<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'''~((((&lt;++&lt;~-(('(&lt;(((&lt;(((&lt;(~(((&lt;&lt;((((~--&lt;s====s=<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.'(&lt;(((&lt;=+(-'(~'(&lt;((&lt;+~~(&lt;~-(((&lt;+((((&lt;~'(sss==s&lt;<br />
+                &nbsp;&nbsp;&nbsp;..&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;'(((&lt;&lt;+=&lt;~-'~-'(&lt;((+&lt;-~&lt;('-(&lt;((&lt;&lt;(((&lt;(-(s=====(<br />
+                &nbsp;&nbsp;.''.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'((&lt;&lt;+==&lt;~----'((((+~'~&lt;~'-(&lt;(~&lt;&lt;(((((~(s===+&lt;(<br />
+                &nbsp;&nbsp;.'.'.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'((&lt;+==&lt;~&lt;+=+-'~((&lt;(''(('.'~&lt;(-(+((((((&lt;====(((<br />
+                &nbsp;&nbsp;......&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-((&lt;===((ss==&lt;'-~((-.'(~...~&lt;~-(+&lt;(((((+s==+((&lt;<br />
+                &nbsp;&nbsp;&nbsp;...'.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'~(+===(+s&lt;''=~'~(('.'~-...~&lt;-'(+&lt;(((((+s===&lt;(&lt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;..'.&nbsp;&nbsp;&nbsp;&nbsp;..'(++s=&lt;+++'.s&lt;'-~(..''....~(-.~+&lt;(((((+s===&lt;(&lt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;....&nbsp;&nbsp;.'..(&lt;+==(~+z+(s(.'~~'.'..'..~~'.-&lt;&lt;(((((+s===&lt;((<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..'.&nbsp;..'..~&lt;=s=(-+s==s~.'-'..'..'.'~-'.-&lt;&lt;((((&lt;=s===+~.<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;....&nbsp;....&nbsp;'(+s=(.(=&lt;&lt;=-.''........'-''.-&lt;&lt;((((&lt;=s==+&lt;-&nbsp;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;....'''.&nbsp;'(+==(.'((&lt;(.......'(&lt;&lt;('....-(&lt;((((&lt;==+&lt;(('&nbsp;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'''..''.&nbsp;-&lt;&lt;+=(.'-(('.....'.-==szz+~..-&lt;&lt;((((+=+(((('&nbsp;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.......'..-(&lt;+=(..''...'.....''.'-&lt;zz('~+&lt;(((&lt;==&lt;((((.&nbsp;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;....''''..-((+=(..'....'.'.........-&lt;~-&lt;=&lt;(((&lt;=s&lt;((&lt;~&nbsp;&nbsp;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...'''.'..~((&lt;=(..''...'.'.....'.'....~+=&lt;(((+==&lt;((&lt;-&nbsp;&nbsp;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;......'''.~((&lt;=(.''...'.......''.'''.-&lt;==&lt;((&lt;=s=&lt;(&lt;(.&nbsp;&nbsp;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;....''''''-((&lt;=(..'....'-'''......'.'&lt;=s=&lt;((&lt;=s=&lt;(((.&nbsp;&nbsp;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.....''.'-~(+==-..'..'((-~-'......'~+s=+&lt;((+=s=&lt;(&lt;(.&nbsp;&nbsp;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'....'''.'-(+=s+-....'~~~~~-.....''~+===&lt;(&lt;====&lt;((~&nbsp;&nbsp;&nbsp;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.'...--'..'~&lt;=ss+~..'.-~~-~-.......(=s=+((+==s=&lt;((~&nbsp;&nbsp;&nbsp;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;....'--''..-&lt;=sss=~...'~~~~'....'.-+s=+((&lt;=s===+~--&nbsp;&nbsp;&nbsp;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'...''''.&nbsp;'(==&lt;+s(''..'--'...'...(====&lt;(+=s=+&lt;+~.-&nbsp;&nbsp;&nbsp;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.'...''..&nbsp;.~==-~=&lt;+=-......'.''.-+s=ss&lt;+sss=~(+'&nbsp;'&nbsp;&nbsp;&nbsp;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;........&nbsp;&nbsp;'&lt;+~(sshh=(-'-'''''..&lt;s+&lt;ss+shss&lt;.(+.&nbsp;.&nbsp;&nbsp;&nbsp;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;''....'.&nbsp;&nbsp;.~+&lt;+zzzzzzss(''....~=+-(z==hzsz+'~~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'~'....~-.&nbsp;&nbsp;'&lt;&lt;&lt;zzzsszhh(.'...-+&lt;''+z=szzszs=&lt;'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+&lt;'....&lt;+-&nbsp;&nbsp;.(+&lt;zzszzzhs'....'~-.'&lt;zzsszzszzz+-'.&nbsp;&nbsp;&nbsp;&nbsp;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'&lt;s~..'.'+=~&nbsp;&nbsp;.(=&lt;zzssszh+.....''.'+zhsszsszz=+&lt;+&lt;-.&nbsp;&nbsp;&nbsp;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;'&lt;ss-....-=s(.&nbsp;.(=&lt;szzzzzz&lt;''.....-=hhzzzzzzs=&lt;(&lt;&lt;(-.&nbsp;&nbsp;&nbsp;<br />
+              </pre>
+              <p className='error-alert'>ERROR in {location.href}</p>
+              <p className='error-alert'>Page not found: {'\'' + location.pathname + '\' isn\'t exist'}</p>
+              <p className='error-comment-out'># 出错啦，已经为您跳转到选型向导了</p>
+              <p className='error-comment-out'># 点击左上角的红色按钮可以关闭<small>伪</small>控制台</p>
+              <p className='error-input'>$ </p>
+            </code>
+          </pre>
         </div>
       );
     }
