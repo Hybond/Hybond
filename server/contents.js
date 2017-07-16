@@ -3,28 +3,26 @@ var md = require("markdown").markdown;
 var EventEmitter = require('events').EventEmitter;
 var event = new EventEmitter();
 
+
 libMdPath = '../contents/css-pre-processor/less.md';
 contentsPath = '../contents/'
 
 // Tools
 
-function foreachDir(path, foreach) {
-    // console.log("\nLOG: List " + path + " dir");
+function foreachDir(contentsTree, path, read) {
     fs.readdir(path, function(err, files) {
        if (err) {
            return console.error(err);
        }
-       // console.log(files);
        for (var i in files) {
-           foreach(files[i], i, files);
+           read(contentsTree, files[i], i, files);
        }
     });
 
 }
 
-function readMd(filePath, callback, mdJSON) {
+function readMd(filePath, callback) {
 
-    // console.log("\nLOG: readMd:" + filePath)
     fs.readFile(filePath, 'utf-8', function(err, mdfile) {
 
         if (err) {
@@ -40,11 +38,9 @@ function readMd(filePath, callback, mdJSON) {
 
 // Read libs
 
-function readLibs(libMdPath) {
+function readLibs(contentsTree, dirPath, treePath) {
 
-    // console.log('\nLOG: readLibs:' + libMdPath)
-
-    mdJSON = {};
+    console.log(1111,treePath)
 
     function addMdTree(mdtree) {
 
@@ -57,32 +53,34 @@ function readLibs(libMdPath) {
         var tempTabs;
         function addMdJSON(value, index, array) {
             if (index == 2) {
-                mdJSON.description = value[1];
+                eval('contentsTree.' + treePath + '.description = value[1]');
             } else if (value[1].level == 1) {
-                mdJSON.name = value[2];
+                eval('contentsTree.' + treePath + '.name = value[2]');
             } else if (value[1].level == 2) {
                 tempTabs = value[2];
             } else {
                 if ( tempTabs != undefined ) {
-                    mdJSON.tabs[tempTabs] = md.toHTML(value[1]);
+                    eval('contentsTree.' + treePath + '.tabs.' + tempTabs + ' =  md.toHTML(value[1])');
                 }
             }
         }
         mdtree.forEach(addMdJSON);
-        return mdJSON;
+
+        eval('contentsTree.' + treePath + ' = mdJSON');
 
     }
 
-    readMd(filePath, addMdTree, mdJSON);
+    readMd(filePath, addMdTree);
 
 }
 
 // Read parts
 
-function readParts(dirPath) {
+function readParts(contentsTree, dirPath, treePath) {
 
-    partsJSON = { 'libs': {} };
-    foreachDir(dirPath, function(fileName, index, array){
+    eval('contentsTree.' + treePath + ' = {}');
+
+    foreachDir(contentsTree, dirPath, function(contentsTree, fileName, index, array){
 
         filePath = dirPath + '/' + fileName;
 
@@ -91,54 +89,45 @@ function readParts(dirPath) {
 
                 function addPartsJSON(value, index, array) {
                     if (index == 2) {
-                        partsJSON.description = value[1];
+                        eval('contentsTree.' + treePath + '.description = value[1]');
                     } else if (value[1].level == 1) {
-                        partsJSON.name = value[2];
+                        eval('contentsTree.' + treePath + '.name = value[2]');
                     }
                 }
                 mdtree.forEach(addPartsJSON);
 
+                console.log(contentsTree);
+
             })
 
         } else {
-            partsJSON.libs[fileName] = readLibs(filePath);
+            libTreePath = treePath + '.libs.' + fileName.substring(0,fileName.length - 3);
+            eval('contentsTree.' + libTreePath + ' = {}');
+            readLibs(contentsTree, filePath, libTreePath);
         }
 
-        if (index == array.length - 1) { event.emit('eachend') }
-
     })
-
-    event.on('eachend', function() {
-        console.log(111111,partsJSON);
-        return partsJSON;
-    });
 
 }
 
 // Read contents
 
-function readPartsOrder(fileName) {
-    partsOrderJSON = JSON.parse(fs.readFileSync(fileName));
-    return partsOrderJSON.partsOrder;
+function readPartsOrder(contentsTree, filePath, treePath) {
+    eval('contentsTree.' + treePath + ' = ' + fs.readFileSync(filePath));
 }
 
-function readContents(fileName) {
-
-    contentsJSON = {'parts': {}};
+function readContents(contentsTree, fileName, treePath) {
 
     filePath = contentsPath + fileName;
-    console.log("\nLOG: readContents:" + filePath);
     if (fileName == 'parts.json') {
-        contentsJSON.parstOrder = readPartsOrder(filePath);
+        readPartsOrder(contentsTree, filePath, 'partsOrder');
     } else {
-        contentsJSON.parts['fileName'] = readParts(filePath);
+        readParts(contentsTree, filePath, 'parts.'+fileName);
     }
 
-    console.log(contentsJSON)
 }
 
 // Run read dir
 
-contentstree = { 'partsOrder': [], 'parts': {} };
-foreachDir(contentsPath, readContents);
-// console.log("\nPrased contentstree:" + contentstree);
+contentsTree = { 'partsOrder': [], 'parts': {} };
+foreachDir(contentsTree, contentsPath, readContents);
